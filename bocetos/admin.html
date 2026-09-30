@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bocetos · ISEVEN Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Michroma&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400,0,0&display=block">
+<style>
+/* Paleta ISEVEN (la misma de la landing). Oscuro es el modo principal. */
+.t-oscuro {
+  --bg:#0B0B0C; --surface:#161618; --surface-2:#111113; --border:#2A2A2E; --text:#FFFFFF; --muted:#A1A1A8; --subtle:#8A8A92; --track:#222226;
+  --primary:#FF4A00; --primary-hover:#FF6A2B; --primary-soft:rgba(255,74,0,.14); --on-primary:#0B0B0C; --nav-active:rgba(255,74,0,.14); --nav-active-text:#FF7A3D; --brand-panel:#FF4A00;
+  --nuevo-bg:rgba(59,130,246,.18); --nuevo-fg:#93C5FD; --curso-bg:rgba(245,158,11,.18); --curso-fg:#FCD34D; --espera-bg:rgba(139,92,246,.22); --espera-fg:#C4B5FD;
+  --exito-bg:rgba(34,197,94,.18); --exito-fg:#86EFAC; --neutro-bg:rgba(152,162,179,.16); --neutro-fg:#D0D5DD; --peligro-bg:rgba(239,68,68,.18); --peligro-fg:#FCA5A5;
+  --critico:#F87171; --wa:#25D366;
+}
+.t-claro {
+  --bg:#F5F3EF; --surface:#FFFFFF; --surface-2:#FAF8F5; --border:#E6E1DA; --text:#0B0B0C; --muted:#52525B; --subtle:#71717A; --track:#EEEAE4;
+  --primary:#CC3B00; --primary-hover:#B33400; --primary-soft:#FFEDE5; --on-primary:#FFFFFF; --nav-active:#FFEDE5; --nav-active-text:#A83000; --brand-panel:#FF4A00;
+  --nuevo-bg:#DBEAFE; --nuevo-fg:#1E40AF; --curso-bg:#FEF3C7; --curso-fg:#92400E; --espera-bg:#EDE9FE; --espera-fg:#5B21B6;
+  --exito-bg:#DCFCE7; --exito-fg:#166534; --neutro-bg:#EAECF0; --neutro-fg:#344054; --peligro-bg:#FEE2E2; --peligro-fg:#991B1B;
+  --critico:#DC2626; --wa:#128C4A;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color: var(--text); font-size: 14px; }
+a { color: var(--primary); text-decoration: none; } a:hover { text-decoration: underline; }
+.icono { font-family: 'Material Symbols Rounded'; font-size: 18px; line-height: 1; font-weight: normal; font-style: normal; white-space: nowrap; direction: ltr; -webkit-font-smoothing: antialiased; }
+.mono { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--subtle); }
+.display { font-family: 'Michroma', sans-serif; text-transform: uppercase; letter-spacing: .12em; }
+
+.pestanas { position: sticky; top: 0; z-index: 10; display: flex; gap: 4px; align-items: center; padding: 8px 16px; background: #050506; color: #fff; font-size: 13px; }
+.pestanas button { border: 0; background: transparent; color: #B4B4BB; padding: 6px 12px; border-radius: 6px; font: inherit; cursor: pointer; }
+.pestanas button[aria-selected="true"] { background: #FF4A00; color: #0B0B0C; font-weight: 600; }
+.pestanas .espacio { flex: 1; }
+section[data-pantalla] { display: none; } section[data-pantalla].activa { display: block; }
+
+.app { display: flex; min-height: calc(100vh - 44px); }
+.sidebar { width: 248px; flex-shrink: 0; display: flex; flex-direction: column; gap: 28px; padding: 20px 16px; background: var(--surface); border-right: 1px solid var(--border); }
+.marca { display: flex; align-items: center; gap: 12px; padding: 4px 8px; }
+.marca .logo { width: 36px; height: 36px; border-radius: 6px; display: grid; place-items: center; background: var(--primary); color: var(--on-primary); }
+.marca b { display: block; font-family: 'Michroma'; font-size: 13px; letter-spacing: .25em; } .marca small { color: var(--subtle); font-size: 12px; }
+.nav { display: flex; flex-direction: column; gap: 4px; }
+.nav .titulo { padding: 0 12px 6px; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--subtle); }
+.nav a { display: flex; align-items: center; gap: 12px; height: 40px; padding: 0 12px; border-radius: 6px; font-weight: 500; color: var(--muted); }
+.nav a:hover { text-decoration: none; background: var(--track); }
+.nav a.activo { background: var(--nav-active); color: var(--nav-active-text); box-shadow: inset 3px 0 0 var(--primary); }
+.usuario { margin-top: auto; display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2); }
+.principal { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.topbar { height: 64px; display: flex; align-items: center; gap: 12px; padding: 0 32px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.topbar .titulo { flex: 1; font-weight: 600; }
+.buscador { display: flex; align-items: center; gap: 8px; width: 320px; height: 40px; padding: 0 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface-2); color: var(--subtle); }
+.contenido { padding: 32px; display: flex; flex-direction: column; gap: 24px; max-width: 1280px; width: 100%; }
+
+h1 { margin: 0; font-family: 'Michroma'; text-transform: uppercase; letter-spacing: .08em; font-size: 22px; font-weight: 400; }
+.sub { margin: 6px 0 0; color: var(--muted); }
+.encabezado { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; }
+.card h2 { margin: 0; font-size: 16px; font-weight: 600; }
+.btn { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-radius: 4px; font: inherit; font-weight: 600; cursor: pointer; }
+.btn.primario { border: 0; background: var(--primary); color: var(--on-primary); } .btn.primario:hover { background: var(--primary-hover); }
+.btn.secundario { border: 1px solid var(--border); background: var(--surface); color: var(--text); }
+.btn.texto { border: 0; background: transparent; color: var(--primary); }
+.btn.peligro { border: 1px solid var(--critico); background: transparent; color: var(--critico); }
+.btn-icono { width: 40px; height: 40px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--muted); cursor: pointer; }
+.badge { display: inline-flex; padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.badge.nuevo { background: var(--nuevo-bg); color: var(--nuevo-fg); } .badge.curso { background: var(--curso-bg); color: var(--curso-fg); }
+.badge.espera { background: var(--espera-bg); color: var(--espera-fg); } .badge.exito { background: var(--exito-bg); color: var(--exito-fg); }
+.badge.neutro { background: var(--neutro-bg); color: var(--neutro-fg); } .badge.peligro { background: var(--peligro-bg); color: var(--peligro-fg); }
+.avatar { width: 32px; height: 32px; border-radius: 999px; display: inline-grid; place-items: center; background: var(--primary); color: var(--on-primary); font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.kpi { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+.kpi .fila { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 13px; font-weight: 500; }
+.kpi .ico { width: 32px; height: 32px; border-radius: 6px; display: grid; place-items: center; }
+.kpi .valor { font-family: 'Michroma'; font-size: 28px; }
+.kpi .detalle { font-size: 13px; color: var(--subtle); }
+.barras { padding: 20px 24px; display: flex; flex-direction: column; gap: 18px; }
+.barra { display: grid; grid-template-columns: 116px minmax(0,1fr) 32px; align-items: center; gap: 12px; }
+.barra .pista { height: 10px; border-radius: 999px; background: var(--track); overflow: hidden; }
+.barra .pista span { display: block; height: 100%; border-radius: 999px; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+thead tr { background: var(--surface-2); border-bottom: 1px solid var(--border); font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--subtle); }
+th { height: 44px; padding: 0 16px; font-weight: 600; } th:first-child, td:first-child { padding-left: 24px; }
+tbody tr { height: 68px; border-bottom: 1px solid var(--border); } tbody tr:last-child { border-bottom: 0; }
+td { padding: 0 16px; }
+.miniatura { width: 44px; height: 44px; border-radius: 6px; background: linear-gradient(135deg,#232327,#111113); border: 1px solid var(--border); display: grid; place-items: center; flex-shrink: 0; }
+.miniatura svg { stroke: var(--primary); }
+.filtros { display: flex; gap: 12px; padding: 12px; align-items: center; }
+.campo { height: 40px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--muted); min-width: 150px; justify-content: space-between; }
+.input { height: 44px; width: 100%; padding: 0 14px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface-2); color: var(--text); font: inherit; }
+textarea.input { height: 90px; padding: 12px 14px; resize: none; }
+label.et { display: flex; flex-direction: column; gap: 6px; font-weight: 500; font-size: 13px; color: var(--muted); }
+.switch { display: inline-block; cursor: pointer; width: 40px; height: 22px; border-radius: 999px; background: var(--track); position: relative; flex-shrink: 0; border: 1px solid var(--border); }
+.switch::after { content:''; position:absolute; top:2px; left:2px; width:16px; height:16px; border-radius:999px; background: var(--muted); transition:.2s; }
+.switch.on { background: var(--primary); border-color: var(--primary); } .switch.on::after { left: 20px; background: var(--on-primary); }
+.drop { border: 1.5px dashed var(--border); border-radius: 8px; background: var(--surface-2); display: grid; place-items: center; text-align: center; color: var(--subtle); }
+.chip { display:inline-flex; padding:7px 14px; border:1px solid var(--border); border-radius:4px; font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+.chip.sel { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+.login { display: flex; min-height: calc(100vh - 44px); }
+.login .marca-panel { width: 600px; padding: 56px 64px; background: var(--brand-panel); color: #0B0B0C; display: flex; flex-direction: column; justify-content: space-between; }
+.login .formulario { flex: 1; display: grid; place-items: center; }
+.paso { display:flex; gap:16px; align-items:flex-start; margin-bottom:22px; }
+.paso i { font-family:'Michroma'; font-style:normal; font-size:13px; width:34px; height:34px; border:2px solid #0B0B0C; display:grid; place-items:center; flex-shrink:0; }
+</style>
+</head>
+<body class="t-oscuro">
+<nav class="pestanas" role="tablist" aria-label="Pantallas">
+  <button role="tab" data-ir="login">Login</button>
+  <button role="tab" data-ir="dashboard" aria-selected="true">Dashboard</button>
+  <button role="tab" data-ir="productos">Productos</button>
+  <button role="tab" data-ir="editar">Nuevo / editar</button>
+  <button role="tab" data-ir="config">Configuración</button>
+  <button role="tab" data-ir="sistema">Sistema visual</button>
+  <span class="espacio"></span>
+  <button type="button" id="tema">Modo claro</button>
+</nav>
+
+<!-- LOGIN -->
+<section data-pantalla="login">
+  <div class="login">
+    <div class="marca-panel">
+      <div class="display" style="font-size:22px;letter-spacing:.4em">ISEVEN</div>
+      <div>
+        <h2 class="display" style="font-size:28px;line-height:1.3;margin:0 0 44px;letter-spacing:.06em">Administra tu catálogo en minutos</h2>
+        <div class="paso"><i>1</i><div><b>Sube el producto</b><br>Fotos, precio y categoría.</div></div>
+        <div class="paso"><i>2</i><div><b>Márcalo como visible</b><br>Elige cuáles destacar.</div></div>
+        <div class="paso"><i>3</i><div><b>Aparece en la landing</b><br>Al instante, sin tocar código.</div></div>
+      </div>
+      <small style="opacity:.8">¿Problemas para entrar? Contacta a soporte.</small>
+    </div>
+    <div class="formulario">
+      <form style="width:400px;display:flex;flex-direction:column;gap:20px" onsubmit="return false">
+        <div><h1>Inicia sesión</h1><p class="sub">Acceso solo para el administrador.</p></div>
+        <label class="et">Correo<input class="input" type="email" placeholder="admin@iseven.com"></label>
+        <label class="et">Contraseña<input class="input" type="password" value="••••••••"></label>
+        <button class="btn primario" style="justify-content:center;height:44px" data-ir="dashboard">Ingresar</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<template id="layout">
+  <div class="app">
+    <aside class="sidebar">
+      <div class="marca"><span class="logo"><span class="icono">storefront</span></span><div><b>ISEVEN</b><small>Panel admin</small></div></div>
+      <nav class="nav"><span class="titulo">General</span>
+        <a href="#" data-nav="dashboard"><span class="icono">space_dashboard</span>Dashboard</a>
+        <a href="#" data-nav="productos"><span class="icono">inventory_2</span>Productos</a>
+      </nav>
+      <nav class="nav"><span class="titulo">Sitio</span>
+        <a href="#" data-nav="config"><span class="icono">tune</span>Configuración</a>
+        <a href="landing.html" target="_blank"><span class="icono">open_in_new</span>Ver landing</a>
+      </nav>
+      <div class="usuario"><span class="avatar">IS</span><div style="flex:1"><b>Italo</b><br><small style="color:var(--subtle)">Administrador</small></div><span class="icono" style="color:var(--muted)">logout</span></div>
+    </aside>
+    <div class="principal">
+      <header class="topbar"><span class="titulo" data-titulo></span>
+        <div class="buscador"><span class="icono">search</span>Buscar producto…</div>
+        <button class="btn-icono" type="button" aria-label="Cambiar tema" onclick="alternarTema()"><span class="icono">light_mode</span></button>
+      </header>
+      <main class="contenido" data-slot></main>
+    </div>
+  </div>
+</template>
+
+<!-- DASHBOARD -->
+<section data-pantalla="dashboard" data-titulo="Dashboard" class="activa">
+  <div class="encabezado"><div><h1>Hola, Italo</h1><p class="sub">Así está tu catálogo hoy.</p></div><button class="btn primario" data-ir="editar"><span class="icono">add</span>Nuevo producto</button></div>
+  <div class="kpis">
+    <div class="card kpi"><div class="fila">Productos<span class="ico" style="background:var(--primary-soft);color:var(--primary)"><span class="icono">inventory_2</span></span></div><span class="valor">32</span><span class="detalle">En el catálogo</span></div>
+    <div class="card kpi"><div class="fila">Visibles en landing<span class="ico" style="background:var(--exito-bg);color:var(--exito-fg)"><span class="icono">visibility</span></span></div><span class="valor">10 <small style="font-size:14px;color:var(--subtle)">/ 12</small></span><span class="detalle">Quedan 2 espacios</span></div>
+    <div class="card kpi"><div class="fila">Agotados<span class="ico" style="background:var(--peligro-bg);color:var(--peligro-fg)"><span class="icono">production_quantity_limits</span></span></div><span class="valor">3</span><span class="detalle">Revisa reposición</span></div>
+    <div class="card kpi"><div class="fila">Clics a WhatsApp (7 d)<span class="ico" style="background:var(--nuevo-bg);color:var(--nuevo-fg)"><span class="icono">chat</span></span></div><span class="valor">146</span><span class="detalle">+18% vs semana previa</span></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card barras"><h2>Por categoría</h2>
+      <div class="barra"><span>Zapatillas</span><div class="pista"><span style="width:100%;background:var(--primary)"></span></div><b style="text-align:right">14</b></div>
+      <div class="barra"><span>Ropa</span><div class="pista"><span style="width:64%;background:var(--primary)"></span></div><b style="text-align:right">9</b></div>
+      <div class="barra"><span>iPhones / Tech</span><div class="pista"><span style="width:50%;background:var(--primary)"></span></div><b style="text-align:right">7</b></div>
+      <div class="barra"><span>Otros</span><div class="pista"><span style="width:14%;background:var(--primary)"></span></div><b style="text-align:right">2</b></div>
+    </div>
+    <div class="card barras"><h2>Por estado</h2>
+      <div class="barra"><span class="badge exito" style="justify-self:start">Visible</span><div class="pista"><span style="width:100%;background:var(--exito-fg)"></span></div><b style="text-align:right">10</b></div>
+      <div class="barra"><span class="badge neutro" style="justify-self:start">Oculto</span><div class="pista"><span style="width:90%;background:var(--neutro-fg)"></span></div><b style="text-align:right">17</b></div>
+      <div class="barra"><span class="badge curso" style="justify-self:start">Por encargo</span><div class="pista"><span style="width:20%;background:var(--curso-fg)"></span></div><b style="text-align:right">2</b></div>
+      <div class="barra"><span class="badge peligro" style="justify-self:start">Agotado</span><div class="pista"><span style="width:30%;background:var(--peligro-fg)"></span></div><b style="text-align:right">3</b></div>
+    </div>
+  </div>
+  <div class="card"><div style="display:flex;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border)"><h2>Últimos cambios</h2><a href="#" data-ir="productos">Ver todos</a></div>
+    <table><tbody>
+      <tr><td><b>Nike Air Max 90</b> <span class="mono">· precio $189 → $179</span></td><td style="text-align:right;padding-right:24px;color:var(--subtle)">hace 12 min</td></tr>
+      <tr><td><b>Jordan 1 Retro High</b> <span class="mono">· marcado como Agotado</span></td><td style="text-align:right;padding-right:24px;color:var(--subtle)">hace 2 h</td></tr>
+      <tr><td><b>iPhone 15 Pro 256GB</b> <span class="mono">· publicado en la landing</span></td><td style="text-align:right;padding-right:24px;color:var(--subtle)">ayer</td></tr>
+    </tbody></table>
+  </div>
+</section>
+
+<!-- PRODUCTOS -->
+<section data-pantalla="productos" data-titulo="Productos">
+  <div class="encabezado"><div><h1>Productos</h1><p class="sub">32 productos · 10 de 12 visibles en la landing</p></div><button class="btn primario" data-ir="editar"><span class="icono">add</span>Nuevo producto</button></div>
+  <div class="card filtros">
+    <div class="campo" style="flex:1;justify-content:flex-start"><span class="icono">search</span>Buscar por nombre</div>
+    <div class="campo">Todas las categorías<span class="icono">expand_more</span></div>
+    <div class="campo">Todos los estados<span class="icono">expand_more</span></div>
+  </div>
+  <div class="card" style="overflow:hidden">
+    <table>
+      <thead><tr><th>Producto</th><th style="width:150px">Categoría</th><th style="width:110px">Precio</th><th style="width:130px">Estado</th><th style="width:130px">En la landing</th><th style="width:110px;text-align:right;padding-right:24px">Acciones</th></tr></thead>
+      <tbody id="filas"></tbody>
+    </table>
+    <div style="display:flex;justify-content:space-between;align-items:center;height:56px;padding:0 24px;border-top:1px solid var(--border);color:var(--muted);font-size:13px"><span>1–8 de 32</span><span>‹ 1 2 3 4 ›</span></div>
+  </div>
+</section>
+
+<!-- EDITAR -->
+<section data-pantalla="editar" data-titulo="Nuevo producto">
+  <div class="encabezado"><div><h1>Nuevo producto</h1><p class="sub">Lo que guardes aquí aparece en la landing si lo dejas visible.</p></div>
+    <div style="display:flex;gap:8px"><button class="btn secundario" data-ir="productos">Cancelar</button><button class="btn primario" data-ir="productos"><span class="icono">check</span>Guardar</button></div></div>
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="card" style="padding:24px;display:flex;flex-direction:column;gap:18px"><h2>Información</h2>
+        <label class="et">Nombre<input class="input" value="Nike Air Max 90 Infrared"></label>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+          <label class="et">Categoría<div class="input" style="display:flex;align-items:center;justify-content:space-between;color:var(--text)">Zapatillas<span class="icono">expand_more</span></div></label>
+          <label class="et">Precio<input class="input" value="189.00"></label>
+          <label class="et">Moneda<div class="input" style="display:flex;align-items:center;justify-content:space-between;color:var(--text)">USD ($)<span class="icono">expand_more</span></div></label>
+        </div>
+        <label class="et">Descripción corta<textarea class="input">Clásicas Air Max 90 en colorway Infrared. 100% originales, importadas de EE. UU.</textarea></label>
+        <div><div class="et" style="margin-bottom:8px;font-size:13px;color:var(--muted);font-weight:500">Etiqueta (opcional)</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="chip">Ninguna</span><span class="chip sel">Nuevo</span><span class="chip">Últimas unidades</span><span class="chip">Por encargo</span></div></div>
+      </div>
+      <div class="card" style="padding:24px;display:flex;flex-direction:column;gap:14px"><h2>Fotos</h2>
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:12px;height:150px">
+          <div class="miniatura" style="width:auto;height:auto;border-color:var(--primary)"><svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke-width="1"><path d="M3 17v-4l4-1 2-5 3 2.5 5 1.5c2 .5 4 2 4 4v2z"/><path d="M3 17h18"/></svg><span class="badge nuevo" style="position:absolute;margin-top:110px">Principal</span></div>
+          <div class="miniatura" style="width:auto;height:auto"><span class="icono" style="color:var(--subtle)">image</span></div>
+          <div class="drop"><div><span class="icono" style="font-size:26px">add_photo_alternate</span><br><small>Arrastra o<br>haz clic</small></div></div>
+          <div class="drop"><div><span class="icono" style="font-size:26px">add_photo_alternate</span></div></div>
+        </div>
+        <small style="color:var(--subtle)">Hasta 4 fotos · se optimizan automáticamente (WebP) al subir.</small>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div class="card" style="padding:20px;display:flex;flex-direction:column;gap:16px"><h2>Publicación</h2>
+        <div style="display:flex;justify-content:space-between;align-items:center"><div><b>Visible en la landing</b><br><small style="color:var(--subtle)">10 de 12 en uso</small></div><span class="switch on"></span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center"><div><b>Agotado</b><br><small style="color:var(--subtle)">Muestra “Agotado” sin borrar</small></div><span class="switch"></span></div>
+        <label class="et">Orden de aparición<input class="input" value="3"></label>
+      </div>
+      <div class="card" style="padding:20px"><h2 style="margin-bottom:14px">Vista previa</h2>
+        <div style="border:1px solid var(--border);border-radius:6px;overflow:hidden;background:#0B0B0C">
+          <div style="aspect-ratio:1;background:linear-gradient(135deg,#1f1f23,#0f0f11);display:grid;place-items:center;position:relative"><span style="position:absolute;top:10px;left:10px;background:#FF4A00;color:#fff;font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:2px">Nuevo</span><svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="#3a3a40" stroke-width="1"><path d="M3 17v-4l4-1 2-5 3 2.5 5 1.5c2 .5 4 2 4 4v2z"/><path d="M3 17h18"/></svg></div>
+          <div style="padding:14px;color:#fff"><small style="color:#A1A1A8;letter-spacing:.1em;text-transform:uppercase;font-size:10px">Zapatillas</small><div style="font-weight:600;margin-top:2px">Nike Air Max 90 Infrared</div><div class="display" style="color:#FF4A00;font-size:13px;margin-top:6px">$ 189</div>
+            <div style="margin-top:12px;border:1px solid #2A2A2E;text-align:center;padding:9px;font-family:Michroma;font-size:9px;letter-spacing:.12em;text-transform:uppercase">Cotizar por WhatsApp</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONFIG -->
+<section data-pantalla="config" data-titulo="Configuración">
+  <div class="encabezado"><div><h1>Configuración</h1><p class="sub">Todo lo que guardes aquí se actualiza en la landing.</p></div><button class="btn primario"><span class="icono">check</span>Guardar cambios</button></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start">
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <div class="card" style="padding:24px;display:flex;flex-direction:column;gap:18px"><h2>Contacto</h2>
+        <label class="et">WhatsApp (con código de país)<input class="input" value="51999999999"></label>
+        <label class="et">Correo<input class="input" value="hola@iseven.com"></label>
+        <label class="et">Dirección o zona de entrega<input class="input" value="Av. Principal 123, [Tu ciudad]"></label>
+        <label class="et">Enlace de Google Maps (opcional)<input class="input" value="https://maps.google.com/..."></label>
+        <label class="et">Horario de atención<input class="input" value="Lun–Sáb · 9:00–20:00"></label>
+      </div>
+      <div class="card" style="padding:24px;display:flex;flex-direction:column;gap:18px"><h2>Redes sociales</h2>
+        <label class="et">Instagram<input class="input" value="@iseven.pe"></label>
+        <label class="et">TikTok<input class="input" value="@iseven"></label>
+        <label class="et">Facebook<input class="input" value="iseven"></label>
+        <small style="color:var(--subtle)">Puedes escribir @usuario o pegar el enlace completo. Si dejas una en blanco, no se muestra.</small>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <div class="card" style="padding:24px;display:flex;flex-direction:column;gap:18px"><h2>Pagos</h2>
+        <label class="et">Adelanto para separar el pedido (%)<input class="input" value="50"></label>
+        <small style="color:var(--subtle)">El resto (50 %) se muestra como “pago al recibirlo”.</small>
+        <div><div class="et" style="margin-bottom:8px;font-size:13px;color:var(--muted);font-weight:500">Medios de pago aceptados</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap"><span class="chip sel">Yape ✕</span><span class="chip sel">Plin ✕</span><span class="chip sel">Transferencia bancaria ✕</span><span class="chip sel">Efectivo ✕</span><span class="chip">+ Agregar</span></div></div>
+      </div>
+      <div class="card" style="padding:24px;display:flex;flex-direction:column;gap:18px"><h2>Textos de la landing</h2>
+        <label class="et">Titular del hero<input class="input" value="Lo mejor del mundo, en tu puerta"></label>
+        <label class="et">Ciudad<input class="input" value="[Tu ciudad]"></label>
+        <label class="et">Aviso superior (opcional)<input class="input" value="Nuevo envío desde EE. UU. el 15 de octubre"></label>
+        <small style="color:var(--subtle)">El aviso aparece como una franja naranja arriba de todo. Déjalo vacío para ocultarlo.</small>
+      </div>
+      <div class="card" style="padding:24px;display:flex;flex-direction:column;gap:18px"><h2>WhatsApp y catálogo</h2>
+        <label class="et">Mensaje base de cotización<textarea class="input">Hola ISEVEN, me interesa {producto}. ¿Está disponible?</textarea></label>
+        <small style="color:var(--subtle)">{producto} se reemplaza por el nombre del producto en cada botón.</small>
+        <label class="et">Máximo de productos visibles<input class="input" value="12"></label>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SISTEMA -->
+<section data-pantalla="sistema" data-titulo="Sistema visual">
+  <div class="encabezado"><div><h1>Sistema visual</h1><p class="sub">Misma paleta que la landing · Michroma + Inter · Angular Material + Tailwind</p></div></div>
+  <div class="card" style="padding:24px;display:flex;flex-direction:column;gap:22px">
+    <div><h2>Colores base</h2><p style="display:flex;gap:10px;flex-wrap:wrap">
+      <span style="width:110px;height:64px;background:#FF4A00;color:#0B0B0C;padding:8px;font-size:11px;font-weight:700;border-radius:4px">#FF4A00<br>Primario</span>
+      <span style="width:110px;height:64px;background:#0B0B0C;border:1px solid #2A2A2E;color:#fff;padding:8px;font-size:11px;border-radius:4px">#0B0B0C<br>Fondo</span>
+      <span style="width:110px;height:64px;background:#161618;border:1px solid #2A2A2E;color:#fff;padding:8px;font-size:11px;border-radius:4px">#161618<br>Superficie</span>
+      <span style="width:110px;height:64px;background:#2A2A2E;color:#fff;padding:8px;font-size:11px;border-radius:4px">#2A2A2E<br>Bordes</span>
+      <span style="width:110px;height:64px;background:#A1A1A8;color:#0B0B0C;padding:8px;font-size:11px;border-radius:4px">#A1A1A8<br>Texto 2º</span></p></div>
+    <div><h2>Estados de producto</h2><p style="display:flex;gap:8px;flex-wrap:wrap"><span class="badge exito">Visible</span><span class="badge neutro">Oculto</span><span class="badge curso">Por encargo</span><span class="badge peligro">Agotado</span><span class="badge nuevo">Nuevo</span></p></div>
+    <div><h2>Botones</h2><p style="display:flex;gap:10px"><button class="btn primario">Primario</button><button class="btn secundario">Secundario</button><button class="btn texto">Texto</button><button class="btn peligro">Eliminar</button></p></div>
+    <div><h2>Tipografía</h2><p class="display" style="font-size:20px;margin:8px 0">Títulos · Michroma</p><p style="font-size:14px;margin:0;color:var(--muted)">Texto y tablas · Inter 14 px</p></div>
+  </div>
+</section>
+
+<script>
+  const prods = [
+    ['Nike Air Max 90','Zapatillas','$189','Visible','exito',1,'shoe'],
+    ['iPhone 15 Pro 256GB','iPhones','$1,199','Por encargo','curso',1,'phone'],
+    ['Hoodie Essentials','Ropa','$79','Visible','exito',1,'shirt'],
+    ['Jordan 1 Retro High','Zapatillas','$249','Agotado','peligro',0,'shoe'],
+    ['iPhone 14 128GB','iPhones','$799','Visible','exito',1,'phone'],
+    ['Polo Ralph Lauren','Ropa','$59','Oculto','neutro',0,'shirt'],
+    ['Adidas Samba OG','Zapatillas','$139','Visible','exito',1,'shoe'],
+    ['AirPods Pro 2','iPhones','$229','Oculto','neutro',0,'phone'],
+  ];
+  const ic = {
+    shoe:'<path d="M3 17v-4l4-1 2-5 3 2.5 5 1.5c2 .5 4 2 4 4v2z"/><path d="M3 17h18"/>',
+    phone:'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 19h2"/>',
+    shirt:'<path d="M8 3 3 6l2 4 2-1v12h10V9l2 1 2-4-5-3c-1 2-3 2-4 2s-3 0-4-2z"/>'
+  };
+  document.getElementById('filas').innerHTML = prods.map(p => `
+    <tr>
+      <td><div style="display:flex;align-items:center;gap:14px"><span class="miniatura"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke-width="1.3">${ic[p[6]]}</svg></span>
+        <a href="#" data-ir="editar" style="color:var(--text);font-weight:500">${p[0]}</a></div></td>
+      <td>${p[1]}</td><td class="mono" style="color:var(--text)">${p[2]}</td>
+      <td><span class="badge ${p[4]}">${p[3]}</span></td>
+      <td><span class="switch ${p[5] ? 'on' : ''}" role="switch" aria-label="Visible en landing"></span></td>
+      <td style="text-align:right;padding-right:24px;white-space:nowrap"><span class="icono" style="color:var(--muted);margin-right:12px">edit</span><span class="icono" style="color:var(--muted)">delete</span></td>
+    </tr>`).join('');
+
+  const plantilla = document.getElementById('layout');
+  document.querySelectorAll('section[data-pantalla]:not([data-pantalla="login"])').forEach((s) => {
+    const layout = plantilla.content.cloneNode(true);
+    const slot = layout.querySelector('[data-slot]');
+    while (s.firstChild) slot.appendChild(s.firstChild);
+    layout.querySelector('[data-titulo]').textContent = s.dataset.titulo;
+    layout.querySelectorAll('[data-nav]').forEach((a) => {
+      const p = s.dataset.pantalla;
+      if (a.dataset.nav === p || (p === 'editar' && a.dataset.nav === 'productos')) a.classList.add('activo');
+      a.dataset.ir = a.dataset.nav;
+    });
+    s.appendChild(layout);
+  });
+  function ir(p) {
+    document.querySelectorAll('section[data-pantalla]').forEach((s) => s.classList.toggle('activa', s.dataset.pantalla === p));
+    document.querySelectorAll('.pestanas [data-ir]').forEach((b) => b.setAttribute('aria-selected', String(b.dataset.ir === p)));
+    window.scrollTo(0, 0);
+  }
+  document.addEventListener('click', (e) => {
+    const d = e.target.closest('[data-ir]');
+    if (d) { e.preventDefault(); ir(d.dataset.ir); }
+    const sw = e.target.closest('.switch'); if (sw) sw.classList.toggle('on');
+  });
+  function alternarTema() {
+    const oscuro = document.body.classList.toggle('t-claro');
+    document.body.classList.toggle('t-oscuro', !oscuro);
+    document.getElementById('tema').textContent = oscuro ? 'Modo oscuro' : 'Modo claro';
+    document.querySelectorAll('.topbar .btn-icono .icono').forEach((i) => (i.textContent = oscuro ? 'dark_mode' : 'light_mode'));
+  }
+  document.getElementById('tema').addEventListener('click', alternarTema);
+</script>
+</body>
+</html>

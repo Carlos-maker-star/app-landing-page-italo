@@ -1,0 +1,126 @@
+<form [formGroup]="form" (ngSubmit)="guardar()" class="flex flex-col gap-6" novalidate>
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="flex flex-col gap-1.5">
+      <h1 class="display m-0 text-[22px]">Configuración</h1>
+      <p class="m-0 text-sm text-muted">Todo lo que guardes aquí se actualiza en la landing.</p>
+    </div>
+    <button matButton="filled" type="submit" [disabled]="guardando() || cargando()">
+      <mat-icon>check</mat-icon>{{ guardando() ? 'Guardando…' : 'Guardar cambios' }}
+    </button>
+  </div>
+
+  <div class="h-1">@if (cargando() || guardando()) { <mat-progress-bar mode="indeterminate" /> }</div>
+
+  @if (error()) {
+    <p class="m-0 rounded-md bg-peligro-bg px-4 py-3 text-sm text-peligro-fg" role="alert">{{ error() }}</p>
+  }
+
+  <div class="grid items-start gap-6 lg:grid-cols-2">
+    <div class="flex flex-col gap-6">
+      <section class="flex flex-col gap-5 rounded-lg border border-line bg-surface p-6">
+        <h2 class="m-0 text-base font-semibold">Contacto</h2>
+        <mat-form-field>
+          <mat-label>WhatsApp (con código de país)</mat-label>
+          <input matInput formControlName="whatsapp" inputmode="tel" placeholder="51999999999" />
+          <mat-hint>Es el número al que llegan todas las cotizaciones</mat-hint>
+          @if (form.controls.whatsapp.hasError('pattern')) { <mat-error>Usa solo números, por ejemplo 51999999999</mat-error> }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Correo</mat-label>
+          <input matInput type="email" formControlName="correo" placeholder="hola@iseven.com" />
+          @if (form.controls.correo.hasError('email')) { <mat-error>Escribe un correo válido</mat-error> }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Dirección o zona de entrega</mat-label>
+          <input matInput formControlName="direccion" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Enlace de Google Maps (opcional)</mat-label>
+          <input matInput formControlName="mapa_url" placeholder="https://maps.google.com/..." />
+          @if (form.controls.mapa_url.hasError('pattern')) { <mat-error>Debe empezar con https://</mat-error> }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Horario de atención</mat-label>
+          <input matInput formControlName="horario" placeholder="Lun–Sáb · 9:00–20:00" />
+        </mat-form-field>
+      </section>
+
+      <section class="flex flex-col gap-5 rounded-lg border border-line bg-surface p-6">
+        <h2 class="m-0 text-base font-semibold">Redes sociales</h2>
+        <mat-form-field>
+          <mat-label>Instagram</mat-label>
+          <input matInput formControlName="instagram" placeholder="@iseven.pe" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>TikTok</mat-label>
+          <input matInput formControlName="tiktok" placeholder="@iseven" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Facebook</mat-label>
+          <input matInput formControlName="facebook" placeholder="iseven" />
+        </mat-form-field>
+        <p class="m-0 text-xs text-subtle">Puedes escribir @usuario o pegar el enlace completo. Si dejas una en blanco, su ícono no aparece en la landing.</p>
+      </section>
+    </div>
+
+    <div class="flex flex-col gap-6">
+      <section class="flex flex-col gap-5 rounded-lg border border-line bg-surface p-6">
+        <h2 class="m-0 text-base font-semibold">Pagos</h2>
+        <mat-form-field>
+          <mat-label>Adelanto para separar el pedido (%)</mat-label>
+          <input matInput type="number" min="0" max="100" formControlName="adelanto_pct" />
+          <mat-hint>El resto ({{ 100 - (form.controls.adelanto_pct.value || 0) }} %) se muestra como “pago al recibirlo”</mat-hint>
+          @if (form.controls.adelanto_pct.invalid) { <mat-error>Debe estar entre 0 y 100</mat-error> }
+        </mat-form-field>
+        <div class="flex flex-col gap-2">
+          <mat-form-field>
+            <mat-label>Medios de pago aceptados</mat-label>
+            <mat-chip-grid #cuadricula aria-label="Medios de pago">
+              @for (m of metodos(); track m) {
+                <mat-chip-row (removed)="quitarMetodo(m)">
+                  {{ m }}
+                  <button matChipRemove [attr.aria-label]="'Quitar ' + m"><mat-icon>cancel</mat-icon></button>
+                </mat-chip-row>
+              }
+              <input placeholder="Escribe y pulsa Enter…" [matChipInputFor]="cuadricula" (matChipInputTokenEnd)="agregarMetodo($event)" />
+            </mat-chip-grid>
+            <mat-hint>Yape, Plin, Transferencia, Efectivo…</mat-hint>
+          </mat-form-field>
+        </div>
+      </section>
+
+      <section class="flex flex-col gap-5 rounded-lg border border-line bg-surface p-6">
+        <h2 class="m-0 text-base font-semibold">Textos de la landing</h2>
+        <mat-form-field>
+          <mat-label>Titular del hero</mat-label>
+          <input matInput formControlName="titular_hero" />
+          @if (form.controls.titular_hero.hasError('required')) { <mat-error>El titular es obligatorio</mat-error> }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Ciudad</mat-label>
+          <input matInput formControlName="ciudad" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Aviso superior (opcional)</mat-label>
+          <input matInput formControlName="anuncio" placeholder="Nuevo envío desde EE. UU. el 15 de octubre" />
+          <mat-hint>Aparece como una franja naranja arriba de todo. Déjalo vacío para ocultarlo</mat-hint>
+        </mat-form-field>
+      </section>
+
+      <section class="flex flex-col gap-5 rounded-lg border border-line bg-surface p-6">
+        <h2 class="m-0 text-base font-semibold">WhatsApp y catálogo</h2>
+        <mat-form-field>
+          <mat-label>Mensaje base de cotización</mat-label>
+          <textarea matInput rows="3" formControlName="mensaje_base"></textarea>
+          <mat-hint>{{ '{producto}' }} se reemplaza por el nombre del producto en cada botón</mat-hint>
+          @if (form.controls.mensaje_base.hasError('required')) { <mat-error>El mensaje es obligatorio</mat-error> }
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Máximo de productos visibles</mat-label>
+          <input matInput type="number" min="1" max="48" formControlName="max_visibles" />
+          @if (form.controls.max_visibles.invalid) { <mat-error>Entre 1 y 48</mat-error> }
+        </mat-form-field>
+      </section>
+    </div>
+  </div>
+</form>

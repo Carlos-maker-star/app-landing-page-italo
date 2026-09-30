@@ -1,0 +1,87 @@
+<div class="flex h-dvh overflow-hidden bg-app text-ink">
+  @if (menuAbierto()) {
+    <div class="fixed inset-0 z-30 bg-black/50 lg:hidden" (click)="menuAbierto.set(false)" aria-hidden="true"></div>
+  }
+
+  <aside
+    class="fixed inset-y-0 left-0 z-40 flex w-62 shrink-0 flex-col gap-7 border-r border-line bg-surface px-4 py-5 transition-transform lg:static lg:translate-x-0"
+    [class.-translate-x-full]="!menuAbierto()"
+  >
+    <a routerLink="/" class="flex items-center gap-3 px-2 py-1 text-ink no-underline">
+      <span class="flex size-9 items-center justify-center rounded-md bg-primary text-on-primary">
+        <mat-icon class="icono-sm" aria-hidden="true">{{ marca.icono }}</mat-icon>
+      </span>
+      <span class="flex flex-col">
+        <span class="display text-[13px] tracking-[.25em]">{{ marca.nombre }}</span>
+        <span class="text-xs text-subtle">{{ marca.subtitulo }}</span>
+      </span>
+    </a>
+
+    @for (seccion of navegacion; track seccion.titulo) {
+      <nav [attr.aria-label]="seccion.titulo" class="flex flex-col gap-1">
+        <span class="px-3 pb-1.5 text-[11px] font-semibold uppercase tracking-wider text-subtle">{{ seccion.titulo }}</span>
+        @for (item of seccion.items; track item.ruta) {
+          <a
+            [routerLink]="item.ruta"
+            routerLinkActive="bg-nav-active! text-nav-active-ink! shadow-[inset_3px_0_0_var(--app-primary)]"
+            (click)="menuAbierto.set(false)"
+            class="flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium text-muted no-underline hover:bg-surface-2"
+          >
+            <mat-icon class="icono-sm" aria-hidden="true">{{ item.icono }}</mat-icon>
+            {{ item.etiqueta }}
+          </a>
+        }
+        @if (seccion.titulo === 'Sitio' && landingUrl) {
+          <a
+            [href]="landingUrl"
+            target="_blank"
+            rel="noopener"
+            class="flex h-10 items-center gap-3 rounded-md px-3 text-sm font-medium text-muted no-underline hover:bg-surface-2"
+          >
+            <mat-icon class="icono-sm" aria-hidden="true">open_in_new</mat-icon>
+            Ver landing
+          </a>
+        }
+      </nav>
+    }
+
+    <div class="flex-1"></div>
+
+    <div class="flex items-center gap-3 rounded-lg border border-line bg-surface-2 p-3">
+      <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold uppercase text-on-primary" aria-hidden="true">
+        {{ auth.nombre().slice(0, 2) }}
+      </span>
+      <div class="flex min-w-0 flex-1 flex-col">
+        <span class="truncate text-sm font-semibold">{{ auth.nombre() }}</span>
+        <span class="truncate text-xs text-subtle">Administrador</span>
+      </div>
+      <button matIconButton type="button" (click)="auth.logout()" aria-label="Cerrar sesión" matTooltip="Cerrar sesión">
+        <mat-icon class="icono-sm">logout</mat-icon>
+      </button>
+    </div>
+  </aside>
+
+  <div class="flex min-w-0 flex-1 flex-col">
+    <header class="flex h-16 shrink-0 items-center gap-3 border-b border-line bg-surface px-4 sm:px-8">
+      <button matIconButton type="button" class="lg:hidden!" (click)="menuAbierto.set(true)" aria-label="Abrir menú">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="flex-1 truncate text-sm font-semibold">{{ titulo() }}</span>
+      <button
+        matIconButton
+        type="button"
+        (click)="tema.alternar()"
+        [attr.aria-label]="tema.oscuro() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+        [matTooltip]="tema.oscuro() ? 'Modo claro' : 'Modo oscuro'"
+      >
+        <mat-icon>{{ tema.oscuro() ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
+    </header>
+
+    <main class="flex-1 overflow-y-auto">
+      <div class="mx-auto w-full max-w-[1280px] p-4 sm:p-8">
+        <router-outlet />
+      </div>
+    </main>
+  </div>
+</div>

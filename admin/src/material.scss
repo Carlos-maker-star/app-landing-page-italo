@@ -1,0 +1,97 @@
+@use '@angular/material' as mat;
+
+// Tema de Angular Material alineado con los tokens de tailwind.css (paleta ISEVEN).
+// `theme-type: color-scheme` usa light-dark(): el modo oscuro se activa con la clase `.dark` en <html>.
+html {
+  color-scheme: light;
+
+  @include mat.theme(
+    (
+      color: (
+        primary: mat.$orange-palette,
+        theme-type: color-scheme,
+      ),
+      typography: (
+        plain-family: Inter,
+        brand-family: Michroma,
+      ),
+      density: 0,
+    )
+  );
+
+  @include mat.theme-overrides(
+    (
+      primary: light-dark(#cc3b00, #ff4a00),
+      on-primary: light-dark(#ffffff, #0b0b0c),
+      primary-container: light-dark(#ffede5, #3a1500),
+      on-primary-container: light-dark(#a83000, #ffb08a),
+      surface: light-dark(#ffffff, #161618),
+      on-surface: light-dark(#0b0b0c, #ffffff),
+      on-surface-variant: light-dark(#52525b, #a1a1a8),
+      surface-container-lowest: light-dark(#ffffff, #111113),
+      surface-container-low: light-dark(#faf8f5, #161618),
+      surface-container: light-dark(#ffffff, #161618),
+      surface-container-high: light-dark(#ffffff, #1d1d20),
+      surface-container-highest: light-dark(#eeeae4, #222226),
+      outline: light-dark(#d4cec5, #3a3a40),
+      outline-variant: light-dark(#e6e1da, #2a2a2e),
+      error: light-dark(#dc2626, #f87171),
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      filled-container-shape: 4px,
+      outlined-container-shape: 4px,
+      text-container-shape: 4px,
+      protected-container-shape: 4px,
+      tonal-container-shape: 4px,
+    )
+  );
+  @include mat.form-field-overrides((outlined-container-shape: 6px));
+  @include mat.dialog-overrides((container-shape: 12px));
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+.campo-denso {
+  @include mat.theme((density: -4));
+}
+
+.mdc-notched-outline__notch {
+  border-right-style: hidden;
+}
+
+.mat-icon.icono-sm {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+}
+
+.mat-icon.icono-xs {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+}
+
+.boton-peligro.mat-mdc-button-base {
+  --mat-button-outlined-label-text-color: var(--app-critico);
+  --mat-button-outlined-outline-color: var(--app-critico);
+  --mat-button-filled-container-color: var(--app-critico);
+  --mat-button-filled-label-text-color: #ffffff;
+}
+
+.aviso-exito .mdc-snackbar__surface {
+  background: var(--app-exito-bg) !important;
+}
+.aviso-exito .mdc-snackbar__label {
+  color: var(--app-exito-fg) !important;
+}
+.aviso-error .mdc-snackbar__surface {
+  background: var(--app-peligro-bg) !important;
+}
+.aviso-error .mdc-snackbar__label {
+  color: var(--app-peligro-fg) !important;
+}

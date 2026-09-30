@@ -1,0 +1,62 @@
+<div class="flex flex-col gap-6">
+  <div class="flex flex-col gap-1.5">
+    <h1 class="display m-0 text-[22px]">Perfil</h1>
+    <p class="m-0 text-sm text-muted">Tu foto para la landing y la seguridad de tu cuenta.</p>
+  </div>
+
+  <div class="grid items-start gap-6 lg:grid-cols-2">
+    <!-- Foto del creador -->
+    <section class="flex flex-col gap-5 rounded-lg border border-line bg-surface p-6">
+      <div class="flex flex-col gap-1">
+        <h2 class="m-0 text-base font-semibold">Foto del creador</h2>
+        <p class="m-0 text-sm text-muted">Aparece en la portada de la landing, junto a los productos. Se guarda al subirla.</p>
+      </div>
+
+      @if (errorFoto()) {
+        <p class="m-0 rounded-md bg-peligro-bg px-3 py-2 text-sm text-peligro-fg" role="alert">{{ errorFoto() }}</p>
+      }
+
+      <div class="h-1">@if (cargandoFoto() || subiendoFoto()) { <mat-progress-bar mode="indeterminate" /> }</div>
+
+      <div class="flex flex-wrap items-start gap-5">
+        <div class="flex aspect-[4/5] w-48 shrink-0 items-center justify-center overflow-hidden rounded-md border border-line bg-surface-2 text-center text-xs uppercase tracking-widest text-subtle">
+          @if (foto()) {
+            <img [src]="foto()" alt="Foto del creador de ISEVEN" class="size-full object-cover" />
+          } @else {
+            Sin foto
+          }
+        </div>
+        <div class="flex min-w-[200px] flex-1 flex-col gap-3">
+          <label class="inline-flex w-fit cursor-pointer items-center gap-2 rounded bg-primary px-4 py-2.5 text-sm font-semibold text-on-primary hover:opacity-90" [class.pointer-events-none]="subiendoFoto()" [class.opacity-60]="subiendoFoto()">
+            <mat-icon class="icono-sm" aria-hidden="true">add_photo_alternate</mat-icon>
+            {{ subiendoFoto() ? 'Subiendo…' : foto() ? 'Cambiar foto' : 'Subir foto' }}
+            <input type="file" accept="image/*" class="sr-only" [disabled]="subiendoFoto()" (change)="elegirFoto($event)" />
+          </label>
+          @if (foto()) {
+            <button matButton type="button" class="w-fit" [disabled]="subiendoFoto()" (click)="quitarFoto()"><mat-icon>delete</mat-icon>Quitar foto</button>
+          }
+          <p class="m-0 text-xs text-subtle">Mejor una foto vertical, con buena luz. Se reduce y convierte a WebP para que cargue rápido.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Seguridad -->
+    <form #dirPassword="ngForm" [formGroup]="formPassword" (ngSubmit)="cambiarPassword()" class="flex flex-col gap-5 rounded-lg border border-line bg-surface p-6" novalidate>
+      <div class="flex flex-col gap-1">
+        <h2 class="m-0 text-base font-semibold">Seguridad</h2>
+        <p class="m-0 text-sm text-muted">Cambia la contraseña con la que entras a este panel ({{ auth.email() }}).</p>
+      </div>
+      @if (errorPassword()) {
+        <p class="m-0 rounded-md bg-peligro-bg px-3 py-2 text-sm text-peligro-fg" role="alert">{{ errorPassword() }}</p>
+      }
+      <app-campo-contrasena etiqueta="Contraseña actual" [control]="formPassword.controls.actual" />
+      <app-campo-contrasena etiqueta="Nueva contraseña" autocomplete="new-password" ayuda="Mínimo 8 caracteres" [control]="formPassword.controls.nueva" />
+      <app-campo-contrasena etiqueta="Repite la nueva contraseña" autocomplete="new-password" [control]="formPassword.controls.repetir" />
+      <div>
+        <button matButton="filled" type="submit" [disabled]="cambiandoPassword()">
+          <mat-icon>lock_reset</mat-icon>{{ cambiandoPassword() ? 'Cambiando…' : 'Cambiar contraseña' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

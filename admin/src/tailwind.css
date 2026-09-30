@@ -1,0 +1,118 @@
+@import 'tailwindcss';
+
+/*
+ * Tokens del sistema visual ISEVEN (misma paleta que la landing).
+ * Los componentes NUNCA usan hex: solo estas utilidades (bg-surface, text-muted, border-line…).
+ * Modo oscuro por defecto; el claro usa el naranja más oscuro para cumplir contraste AA.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme inline {
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-display: 'Michroma', sans-serif;
+
+  --color-app: var(--app-bg);
+  --color-surface: var(--app-surface);
+  --color-surface-2: var(--app-surface-2);
+  --color-line: var(--app-border);
+  --color-ink: var(--app-text);
+  --color-muted: var(--app-muted);
+  --color-subtle: var(--app-subtle);
+  --color-track: var(--app-track);
+
+  --color-primary: var(--app-primary);
+  --color-primary-soft: var(--app-primary-soft);
+  --color-on-primary: var(--app-on-primary);
+  --color-nav-active: var(--app-nav-active);
+  --color-nav-active-ink: var(--app-nav-active-text);
+  --color-brand-panel: var(--app-brand-panel);
+
+  --color-nuevo-bg: var(--app-nuevo-bg);
+  --color-nuevo-fg: var(--app-nuevo-fg);
+  --color-curso-bg: var(--app-curso-bg);
+  --color-curso-fg: var(--app-curso-fg);
+  --color-exito-bg: var(--app-exito-bg);
+  --color-exito-fg: var(--app-exito-fg);
+  --color-neutro-bg: var(--app-neutro-bg);
+  --color-neutro-fg: var(--app-neutro-fg);
+  --color-peligro-bg: var(--app-peligro-bg);
+  --color-peligro-fg: var(--app-peligro-fg);
+  --color-critico: var(--app-critico);
+}
+
+:root {
+  /* Claro (cálido) */
+  --app-bg: #f5f3ef;
+  --app-surface: #ffffff;
+  --app-surface-2: #faf8f5;
+  --app-border: #e6e1da;
+  --app-text: #0b0b0c;
+  --app-muted: #52525b;
+  --app-subtle: #71717a;
+  --app-track: #eeeae4;
+
+  --app-primary: #cc3b00;
+  --app-primary-soft: #ffede5;
+  --app-on-primary: #ffffff;
+  --app-nav-active: #ffede5;
+  --app-nav-active-text: #a83000;
+  --app-brand-panel: #ff4a00;
+
+  --app-nuevo-bg: #dbeafe;
+  --app-nuevo-fg: #1e40af;
+  --app-curso-bg: #fef3c7;
+  --app-curso-fg: #92400e;
+  --app-exito-bg: #dcfce7;
+  --app-exito-fg: #166534;
+  --app-neutro-bg: #eaecf0;
+  --app-neutro-fg: #344054;
+  --app-peligro-bg: #fee2e2;
+  --app-peligro-fg: #991b1b;
+  --app-critico: #dc2626;
+}
+
+.dark {
+  --app-bg: #0b0b0c;
+  --app-surface: #161618;
+  --app-surface-2: #111113;
+  --app-border: #2a2a2e;
+  --app-text: #ffffff;
+  --app-muted: #a1a1a8;
+  --app-subtle: #8a8a92;
+  --app-track: #222226;
+
+  --app-primary: #ff4a00;
+  --app-primary-soft: rgb(255 74 0 / 0.14);
+  --app-on-primary: #0b0b0c;
+  --app-nav-active: rgb(255 74 0 / 0.14);
+  --app-nav-active-text: #ff7a3d;
+  --app-brand-panel: #ff4a00;
+
+  --app-nuevo-bg: rgb(59 130 246 / 0.18);
+  --app-nuevo-fg: #93c5fd;
+  --app-curso-bg: rgb(245 158 11 / 0.18);
+  --app-curso-fg: #fcd34d;
+  --app-exito-bg: rgb(34 197 94 / 0.18);
+  --app-exito-fg: #86efac;
+  --app-neutro-bg: rgb(152 162 179 / 0.16);
+  --app-neutro-fg: #d0d5dd;
+  --app-peligro-bg: rgb(239 68 68 / 0.18);
+  --app-peligro-fg: #fca5a5;
+  --app-critico: #f87171;
+}
+
+@layer base {
+  body {
+    @apply bg-app font-sans text-ink antialiased;
+    margin: 0;
+  }
+}
+
+@layer components {
+  .display {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+}

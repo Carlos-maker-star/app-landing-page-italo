@@ -1,0 +1,19 @@
+# Dependencias y compilados
+node_modules/
+dist/
+.angular/
+*.tsbuildinfo
+
+# Local
+.claude/
+.vscode/
+.idea/
+*.log
+.DS_Store
+Thumbs.db
+
+# Secretos: NUNCA subir
+.env
+.env.*
+*.pem
+*.key

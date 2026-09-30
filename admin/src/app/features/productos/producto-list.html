@@ -1,0 +1,154 @@
+<div class="flex flex-col gap-6">
+  <div class="flex flex-wrap items-end justify-between gap-4">
+    <div class="flex flex-col gap-1.5">
+      <h1 class="display m-0 text-[22px]">Productos</h1>
+      <p class="m-0 text-sm text-muted">{{ productos().length }} productos · {{ visiblesCount() }} de {{ maxVisibles() }} visibles en la landing</p>
+    </div>
+    <a matButton="filled" routerLink="/productos/nuevo"><mat-icon>add</mat-icon>Nuevo producto</a>
+  </div>
+
+  @if (error()) {
+    <p class="m-0 rounded-md bg-peligro-bg px-4 py-3 text-sm text-peligro-fg" role="alert">{{ error() }}</p>
+  }
+
+  <!-- Filtros -->
+  <div class="flex flex-wrap items-center gap-3 rounded-lg border border-line bg-surface p-3">
+    <label class="flex h-10 min-w-[240px] flex-1 items-center gap-2 rounded-md border border-line bg-surface-2 px-3 text-subtle">
+      <mat-icon class="icono-xs" aria-hidden="true">search</mat-icon>
+      <input
+        type="search"
+        aria-label="Buscar por nombre"
+        placeholder="Buscar por nombre"
+        [value]="busqueda()"
+        (input)="buscar($any($event.target).value)"
+        class="w-full border-0 bg-transparent font-sans text-sm text-ink outline-none placeholder:text-subtle"
+      />
+    </label>
+    <select
+      aria-label="Categoría"
+      class="h-10 rounded-md border border-line bg-surface-2 px-3 font-sans text-sm text-ink"
+      [value]="categoria() ?? ''"
+      (change)="filtrarCategoria($any($event.target).value)"
+    >
+      <option value="">Todas las categorías</option>
+      @for (c of categorias(); track c.id) {
+        <option [value]="c.id">{{ c.nombre }}</option>
+      }
+    </select>
+    <select
+      aria-label="Estado"
+      class="h-10 rounded-md border border-line bg-surface-2 px-3 font-sans text-sm text-ink"
+      [value]="estado()"
+      (change)="filtrarEstado($any($event.target).value)"
+    >
+      @for (e of estados; track e.valor) {
+        <option [value]="e.valor">{{ e.etiqueta }}</option>
+      }
+    </select>
+    @if (filtroActivo()) {
+      <button matButton type="button" (click)="limpiar()"><mat-icon>filter_alt_off</mat-icon>Limpiar</button>
+    }
+  </div>
+
+  <section class="overflow-hidden rounded-lg border border-line bg-surface">
+    <div class="h-1">@if (cargando()) { <mat-progress-bar mode="indeterminate" /> }</div>
+    <div class="hidden overflow-x-auto md:block">
+      <table class="w-full min-w-[820px] border-collapse text-left">
+        <thead>
+          <tr class="border-b border-line bg-surface-2 text-xs font-semibold uppercase tracking-wide text-subtle">
+            <th class="h-11 px-6 font-semibold">Producto</th>
+            <th class="w-36 px-4 font-semibold">Categoría</th>
+            <th class="w-28 px-4 font-semibold">Precio</th>
+            <th class="w-32 px-4 font-semibold">Estado</th>
+            <th class="w-32 px-4 font-semibold">En la landing</th>
+            <th class="w-28 px-6 text-right font-semibold">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (p of filas(); track p.id) {
+            <tr class="h-[68px] border-b border-line last:border-b-0 hover:bg-surface-2" [class.opacity-70]="!p.visible">
+              <td class="px-6">
+                <div class="flex items-center gap-3.5">
+                  <app-miniatura [url]="p.imagen_url" [nombre]="p.nombre" />
+                  <div class="flex min-w-0 flex-col">
+                    <a [routerLink]="['/productos', p.id]" class="truncate text-sm font-medium text-ink no-underline hover:text-primary hover:underline">{{ p.nombre }}</a>
+                    @if (p.etiqueta) { <span class="text-xs text-subtle">{{ p.etiqueta }}</span> }
+                  </div>
+                </div>
+              </td>
+              <td class="px-4 text-sm">{{ p.categorias?.nombre ?? '—' }}</td>
+              <td class="px-4 font-mono text-[13px]">{{ precio(p) }}</td>
+              <td class="px-4"><app-estado-badge [producto]="p" /></td>
+              <td class="px-4">
+                <mat-slide-toggle [checked]="p.visible" (change)="alternarVisible(p, $event)" [aria-label]="'Mostrar ' + p.nombre + ' en la landing'" />
+              </td>
+              <td class="px-6 text-right whitespace-nowrap">
+                <a matIconButton [routerLink]="['/productos', p.id]" aria-label="Editar" matTooltip="Editar"><mat-icon class="icono-sm">edit</mat-icon></a>
+                <button matIconButton type="button" (click)="eliminar(p)" aria-label="Eliminar" matTooltip="Eliminar"><mat-icon class="icono-sm">delete</mat-icon></button>
+              </td>
+            </tr>
+          } @empty {
+            @if (!cargando()) {
+              <tr>
+                <td colspan="6" class="px-6 py-14 text-center">
+                  <div class="mx-auto flex max-w-sm flex-col items-center gap-3">
+                    <span class="flex size-12 items-center justify-center rounded-full bg-primary-soft text-primary">
+                      <mat-icon>{{ filtroActivo() ? 'search_off' : 'inventory_2' }}</mat-icon>
+                    </span>
+                    @if (filtroActivo()) {
+                      <p class="m-0 font-semibold">No hay productos con esos filtros</p>
+                      <button matButton type="button" (click)="limpiar()">Limpiar filtros</button>
+                    } @else {
+                      <p class="m-0 font-semibold">Todavía no hay productos</p>
+                      <p class="m-0 text-sm text-muted">Crea el primero y aparecerá en la landing cuando lo marques como visible.</p>
+                      <a matButton="filled" routerLink="/productos/nuevo"><mat-icon>add</mat-icon>Nuevo producto</a>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    </div>
+    <!-- Móvil: una tarjeta por producto (la tabla se usa desde md) -->
+    <ul class="m-0 flex list-none flex-col p-0 md:hidden">
+      @for (p of filas(); track p.id) {
+        <li class="flex flex-col gap-3 border-b border-line p-4 last:border-b-0" [class.opacity-70]="!p.visible">
+          <div class="flex items-center gap-3.5">
+            <app-miniatura [url]="p.imagen_url" [nombre]="p.nombre" />
+            <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+              <a [routerLink]="['/productos', p.id]" class="truncate text-sm font-semibold text-ink no-underline">{{ p.nombre }}</a>
+              <span class="text-xs text-subtle">{{ p.categorias?.nombre ?? 'Sin categoría' }}@if (p.etiqueta) { · {{ p.etiqueta }} }</span>
+            </div>
+            <span class="font-mono text-[13px]">{{ precio(p) }}</span>
+          </div>
+          <div class="flex items-center justify-between gap-3">
+            <app-estado-badge [producto]="p" />
+            <mat-slide-toggle [checked]="p.visible" (change)="alternarVisible(p, $event)" [aria-label]="'Mostrar ' + p.nombre + ' en la landing'">
+              <span class="text-xs text-muted">En la landing</span>
+            </mat-slide-toggle>
+            <span class="whitespace-nowrap">
+              <a matIconButton [routerLink]="['/productos', p.id]" aria-label="Editar"><mat-icon class="icono-sm">edit</mat-icon></a>
+              <button matIconButton type="button" (click)="eliminar(p)" aria-label="Eliminar"><mat-icon class="icono-sm">delete</mat-icon></button>
+            </span>
+          </div>
+        </li>
+      } @empty {
+        @if (!cargando()) {
+          <li class="px-4 py-10 text-center text-sm text-muted">
+            {{ filtroActivo() ? 'No hay productos con esos filtros.' : 'Todavía no hay productos.' }}
+          </li>
+        }
+      }
+    </ul>
+    <mat-paginator
+      class="border-t border-line"
+      [length]="filtrados().length"
+      [pageIndex]="pagina()"
+      [pageSize]="tamanio()"
+      [pageSizeOptions]="[10, 20, 50]"
+      (page)="cambiarPagina($event)"
+    />
+  </section>
+</div>

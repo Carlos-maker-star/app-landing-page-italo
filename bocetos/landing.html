@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ISEVEN — Boceto landing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Michroma&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: { brand:'#FF4A00', brand2:'#FF6A2B', ink:'#0B0B0C', surface:'#161618', line:'#2A2A2E', mute:'#A1A1A8' },
+    fontFamily: { display:['Michroma','sans-serif'], body:['Inter','sans-serif'] }
+  }}
+}
+</script>
+<style>
+  html{scroll-behavior:smooth}
+  body{background:#0B0B0C;color:#fff;font-family:Inter,sans-serif}
+  .display{font-family:Michroma,sans-serif;text-transform:uppercase;letter-spacing:.12em}
+  .grain{position:relative}
+  .grain::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+  .bars{display:inline-flex;flex-direction:column;gap:4px;width:22px}
+  .bars i{display:block;height:3px;background:#FF4A00}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.9rem 1.5rem;border-radius:3px;
+    font-family:Michroma,sans-serif;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;transition:.2s}
+  .btn-primary{background:#FF4A00;color:#fff}.btn-primary:hover{background:#FF6A2B}
+  .btn-ghost{border:1px solid #2A2A2E;color:#fff}.btn-ghost:hover{border-color:#FF4A00;color:#FF4A00}
+  .card:hover{border-color:#FF4A00;transform:translateY(-3px)}
+  .card{transition:.25s}
+  details summary{list-style:none;cursor:pointer}details summary::-webkit-details-marker{display:none}
+  details[open] .plus{transform:rotate(45deg)}
+  .plus{transition:.2s}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-40 bg-ink/90 backdrop-blur border-b border-line">
+  <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+    <a href="#" class="display text-lg tracking-[.35em]">ISEVEN</a>
+    <nav class="hidden md:flex gap-8 text-sm text-mute">
+      <a href="#categorias" class="hover:text-white">Categorías</a>
+      <a href="#catalogo" class="hover:text-white">Catálogo</a>
+      <a href="#como" class="hover:text-white">Cómo funciona</a>
+      <a href="#pagos" class="hover:text-white">Pagos</a>
+      <a href="#faq" class="hover:text-white">Preguntas</a>
+    </nav>
+    <a href="#" class="btn btn-primary !py-2.5 !px-4">Cotizar</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="relative overflow-hidden">
+  <div class="absolute -right-40 -top-40 w-[520px] h-[520px] rounded-full bg-brand/20 blur-[120px]"></div>
+  <div class="max-w-6xl mx-auto px-4 py-16 md:py-24 grid md:grid-cols-2 gap-12 items-center relative">
+    <div>
+      <div class="flex items-center gap-3 mb-6"><span class="bars"><i></i><i></i><i></i></span>
+        <span class="text-xs tracking-[.25em] text-mute uppercase">Importaciones en [Tu ciudad]</span></div>
+      <h1 class="display text-3xl md:text-5xl leading-[1.15]">Lo mejor del mundo, <span class="text-brand">en tu puerta</span></h1>
+      <p class="mt-6 text-mute text-lg max-w-md">Zapatillas, ropa, iPhones y más. Productos 100% originales, importados para ti y con entrega en tu ciudad.</p>
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#catalogo" class="btn btn-primary">Ver catálogo</a>
+        <a href="#" class="btn btn-ghost">Cotizar por WhatsApp</a>
+      </div>
+      <div class="mt-10 flex gap-8 text-sm">
+        <div><div class="display text-xl text-brand">100%</div><div class="text-mute">Originales</div></div>
+        <div><div class="display text-xl text-brand">24–48h</div><div class="text-mute">Entrega local</div></div>
+        <div><div class="display text-xl text-brand">+500</div><div class="text-mute">Pedidos</div></div>
+      </div>
+    </div>
+    <!-- collage placeholder -->
+    <div class="grid grid-cols-2 gap-4">
+      <div class="aspect-[4/5] rounded-md bg-gradient-to-br from-brand to-[#c23500] grain overflow-hidden flex items-center justify-center">
+        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.2"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 19h2"/></svg></div>
+      <div class="aspect-[4/5] rounded-md bg-surface border border-line mt-10 flex items-center justify-center">
+        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#FF4A00" stroke-width="1.2"><path d="M3 17v-4l4-1 2-5 3 2.500 5 1.500c2 .5 4 2 4 4v2z"/><path d="M3 17h18M9 7l1.500 3M12 9l1 2.500"/></svg></div>
+      <div class="aspect-[4/5] rounded-md bg-surface border border-line -mt-10 flex items-center justify-center">
+        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#FF4A00" stroke-width="1.2"><path d="M8 3 3 6l2 4 2-1v12h10V9l2 1 2-4-5-3c-1 2-3 2-4 2s-3 0-4-2z"/></svg></div>
+      <div class="aspect-[4/5] rounded-md bg-gradient-to-br from-[#26262b] to-[#111] border border-line flex items-center justify-center text-center p-4">
+        <div class="text-mute text-xs tracking-widest uppercase">Foto real<br>del cliente</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONFIANZA -->
+<section class="bg-brand grain">
+  <div class="max-w-6xl mx-auto px-4 py-5 grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-xs md:text-sm font-semibold uppercase tracking-widest relative z-10">
+    <div>Productos originales</div><div>Envíos seguros</div><div>Pago protegido</div><div>Seguimiento de tu pedido</div>
+  </div>
+</section>
+
+<!-- CATEGORIAS -->
+<section id="categorias" class="max-w-6xl mx-auto px-4 py-20">
+  <div class="flex items-center gap-3 mb-3"><span class="bars"><i></i><i></i><i></i></span></div>
+  <h2 class="display text-2xl md:text-3xl">Categorías</h2>
+  <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
+    <a href="#catalogo" class="card bg-surface border border-line rounded-md p-6 aspect-square flex flex-col justify-between">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#FF4A00" stroke-width="1.4"><path d="M3 17v-4l4-1 2-5 3 2.500 5 1.500c2 .5 4 2 4 4v2z"/><path d="M3 17h18M9 7l1.500 3M12 9l1 2.500"/></svg>
+      <div><div class="display text-sm">Zapatillas</div><div class="text-mute text-xs mt-1">Nike, Adidas, Jordan…</div></div></a>
+    <a href="#catalogo" class="card bg-surface border border-line rounded-md p-6 aspect-square flex flex-col justify-between">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#FF4A00" stroke-width="1.4"><path d="M8 3 3 6l2 4 2-1v12h10V9l2 1 2-4-5-3c-1 2-3 2-4 2s-3 0-4-2z"/></svg>
+      <div><div class="display text-sm">Ropa</div><div class="text-mute text-xs mt-1">Streetwear y marcas</div></div></a>
+    <a href="#catalogo" class="card bg-surface border border-line rounded-md p-6 aspect-square flex flex-col justify-between">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#FF4A00" stroke-width="1.4"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 19h2"/></svg>
+      <div><div class="display text-sm">iPhones</div><div class="text-mute text-xs mt-1">Y tecnología</div></div></a>
+    <a href="#" class="card bg-brand rounded-md p-6 aspect-square flex flex-col justify-between border border-brand">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.4"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+      <div><div class="display text-sm">A pedido</div><div class="text-white/80 text-xs mt-1">¿Buscas algo específico?</div></div></a>
+  </div>
+</section>
+
+<!-- CATALOGO -->
+<section id="catalogo" class="bg-surface border-y border-line">
+  <div class="max-w-6xl mx-auto px-4 py-20">
+    <div class="flex flex-wrap items-end justify-between gap-6">
+      <div><span class="bars mb-3"><i></i><i></i><i></i></span><h2 class="display text-2xl md:text-3xl">Productos destacados</h2></div>
+      <div class="flex flex-wrap gap-2 text-xs uppercase tracking-widest">
+        <button class="px-4 py-2 rounded-sm bg-brand">Todo</button>
+        <button class="px-4 py-2 rounded-sm border border-line text-mute hover:text-white">Zapatillas</button>
+        <button class="px-4 py-2 rounded-sm border border-line text-mute hover:text-white">Ropa</button>
+        <button class="px-4 py-2 rounded-sm border border-line text-mute hover:text-white">iPhones</button>
+      </div>
+    </div>
+    <p class="text-mute text-sm mt-4">Precios referenciales. Confirma disponibilidad y precio final por WhatsApp.</p>
+
+    <div id="grid" class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4"></div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section id="como" class="max-w-6xl mx-auto px-4 py-20">
+  <span class="bars mb-3"><i></i><i></i><i></i></span>
+  <h2 class="display text-2xl md:text-3xl">Cómo funciona</h2>
+  <div class="mt-12 grid md:grid-cols-4 gap-6">
+    <div class="border-t-2 border-brand pt-5"><div class="display text-brand text-2xl">01</div><h3 class="font-semibold mt-3">Elige tu producto</h3><p class="text-mute text-sm mt-2">Del catálogo o envíanos el link de lo que buscas.</p></div>
+    <div class="border-t-2 border-line pt-5"><div class="display text-mute text-2xl">02</div><h3 class="font-semibold mt-3">Te cotizamos</h3><p class="text-mute text-sm mt-2">Precio final y tiempos por WhatsApp, sin sorpresas.</p></div>
+    <div class="border-t-2 border-line pt-5"><div class="display text-mute text-2xl">03</div><h3 class="font-semibold mt-3">Lo importamos</h3><p class="text-mute text-sm mt-2">Compramos y traemos tu pedido con seguimiento.</p></div>
+    <div class="border-t-2 border-line pt-5"><div class="display text-mute text-2xl">04</div><h3 class="font-semibold mt-3">Lo recibes</h3><p class="text-mute text-sm mt-2">Entrega en tu ciudad, a domicilio o retiro.</p></div>
+  </div>
+</section>
+
+<!-- FORMAS DE PAGO -->
+<section id="pagos" class="bg-surface border-y border-line">
+  <div class="max-w-6xl mx-auto px-4 py-20">
+    <span class="bars mb-3"><i></i><i></i><i></i></span>
+    <h2 class="display text-2xl md:text-3xl">Formas de pago</h2>
+    <p class="mt-4 text-mute max-w-xl">Pagas en dos partes: separas tu pedido y el resto lo pagas cuando lo recibes.</p>
+    <div class="mt-10 grid md:grid-cols-2 gap-4">
+      <div class="rounded-md border border-brand bg-ink p-8"><div class="display text-5xl text-brand">50%</div><h3 class="mt-4 text-lg font-semibold">Para separar tu pedido</h3><p class="mt-2 text-sm text-mute">Con este adelanto confirmamos y compramos tu producto.</p></div>
+      <div class="rounded-md border border-line bg-ink p-8"><div class="display text-5xl">50%</div><h3 class="mt-4 text-lg font-semibold">Al recibirlo</h3><p class="mt-2 text-sm text-mute">Revisas tu producto y pagas el saldo en la entrega.</p></div>
+    </div>
+    <div class="mt-8"><div class="text-xs uppercase tracking-widest text-mute">Medios de pago aceptados</div>
+      <div class="mt-3 flex flex-wrap gap-2 text-sm"><span class="border border-line rounded-sm px-4 py-2">Yape</span><span class="border border-line rounded-sm px-4 py-2">Plin</span><span class="border border-line rounded-sm px-4 py-2">Transferencia bancaria</span><span class="border border-line rounded-sm px-4 py-2">Efectivo</span></div></div>
+  </div>
+</section>
+
+<!-- POR QUE + PRUEBA SOCIAL -->
+<section class="bg-surface border-y border-line">
+  <div class="max-w-6xl mx-auto px-4 py-20">
+    <span class="bars mb-3"><i></i><i></i><i></i></span>
+    <h2 class="display text-2xl md:text-3xl">Clientes que ya recibieron</h2>
+    <div class="mt-10 grid md:grid-cols-3 gap-4">
+      <div class="bg-ink border border-line rounded-md p-6"><div class="text-brand mb-3">★★★★★</div><p class="text-sm text-mute">“Llegaron mis Jordan en el tiempo que me dijeron. Originales y bien empacadas.”</p><div class="mt-4 text-sm font-semibold">Cliente 1 <span class="text-mute font-normal">· [Tu ciudad]</span></div></div>
+      <div class="bg-ink border border-line rounded-md p-6"><div class="text-brand mb-3">★★★★★</div><p class="text-sm text-mute">“Me consiguieron el iPhone que no encontraba en tiendas. Excelente atención.”</p><div class="mt-4 text-sm font-semibold">Cliente 2 <span class="text-mute font-normal">· [Tu ciudad]</span></div></div>
+      <div class="bg-ink border border-dashed border-line rounded-md p-6 flex items-center justify-center text-center text-mute text-sm">Aquí van capturas de chats<br>y fotos de entregas reales</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="max-w-3xl mx-auto px-4 py-20">
+  <span class="bars mb-3"><i></i><i></i><i></i></span>
+  <h2 class="display text-2xl md:text-3xl">Preguntas frecuentes</h2>
+  <div class="mt-10 divide-y divide-line border-y border-line">
+    <details class="py-5"><summary class="flex justify-between items-center font-semibold">¿Cuánto demora mi pedido?<span class="plus text-brand text-2xl">+</span></summary><p class="text-mute text-sm mt-3">Depende del producto y país de origen. Te damos el tiempo exacto al cotizar.</p></details>
+    <details class="py-5"><summary class="flex justify-between items-center font-semibold">¿Los productos son originales?<span class="plus text-brand text-2xl">+</span></summary><p class="text-mute text-sm mt-3">Sí, todos son 100% originales y comprados en tiendas oficiales.</p></details>
+    <details class="py-5"><summary class="flex justify-between items-center font-semibold">¿Cómo pago?<span class="plus text-brand text-2xl">+</span></summary><p class="text-mute text-sm mt-3">Definimos contigo la forma de pago por WhatsApp (transferencia, billetera digital, etc.).</p></details>
+    <details class="py-5"><summary class="flex justify-between items-center font-semibold">¿Hacen entregas a domicilio?<span class="plus text-brand text-2xl">+</span></summary><p class="text-mute text-sm mt-3">Sí, dentro de [Tu ciudad]. También puedes retirar en punto acordado.</p></details>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="bg-brand grain">
+  <div class="max-w-4xl mx-auto px-4 py-20 text-center relative z-10">
+    <h2 class="display text-2xl md:text-4xl leading-tight">¿Buscas algo específico?<br>Lo traemos para ti</h2>
+    <p class="mt-5 text-white/85">Escríbenos y te cotizamos en minutos.</p>
+    <a href="#" class="btn mt-8 bg-ink text-white hover:bg-black">Escribir por WhatsApp</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="border-t border-line">
+  <div class="max-w-6xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-8 text-sm">
+    <div><div class="display tracking-[.35em] text-lg">ISEVEN</div><p class="text-mute mt-3">Importaciones originales para [Tu ciudad].</p></div>
+    <div><div class="font-semibold mb-3">Contacto</div><p class="text-mute">WhatsApp: +00 000 000 000<br>Lun–Sáb · 9:00–20:00</p></div>
+    <div><div class="font-semibold mb-3">Síguenos</div><p class="text-mute">Instagram · TikTok · Facebook</p></div>
+  </div>
+  <div class="text-center text-xs text-mute pb-8">© ISEVEN — Boceto</div>
+</footer>
+
+<!-- WhatsApp flotante -->
+<a href="#" class="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full flex items-center justify-center shadow-lg" style="background:#25D366" aria-label="WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.2 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.600-4.100-4.700-4.300-.1-.2-1.100-1.500-1.100-2.800s.7-2 1-2.300c.2-.3.500-.3.700-.3h.5c.2 0 .4 0 .6.500l.8 2c.1.200.1.300 0 .500l-.3.400-.4.400c-.1.100-.3.300-.1.600.2.300.8 1.300 1.700 2.100 1.100 1 2 1.300 2.300 1.400.3.100.4.100.6-.1l.8-1c.2-.3.400-.2.600-.1l1.900.9c.3.100.5.200.5.300.1.200.1.800-.1 1.400z"/></svg>
+</a>
+
+<script>
+const items = [
+  {n:'Nike Air Max 90', c:'Zapatillas', p:189, t:'Nuevo', i:'shoe'},
+  {n:'iPhone 15 Pro 256GB', c:'iPhones', p:1199, t:'Por encargo', i:'phone'},
+  {n:'Hoodie Essentials', c:'Ropa', p:79, t:'', i:'shirt'},
+  {n:'Jordan 1 Retro High', c:'Zapatillas', p:249, t:'Últimas unidades', i:'shoe'},
+  {n:'iPhone 14 128GB', c:'iPhones', p:799, t:'', i:'phone'},
+  {n:'Polo Ralph Lauren', c:'Ropa', p:59, t:'Nuevo', i:'shirt'},
+  {n:'Adidas Samba OG', c:'Zapatillas', p:139, t:'', i:'shoe'},
+  {n:'AirPods Pro 2', c:'iPhones', p:229, t:'Nuevo', i:'phone'},
+];
+const icon = {
+  shoe:'<path d="M3 17v-4l4-1 2-5 3 2.500 5 1.500c2 .5 4 2 4 4v2z"/><path d="M3 17h18M9 7l1.500 3M12 9l1 2.500"/>',
+  phone:'<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 19h2"/>',
+  shirt:'<path d="M8 3 3 6l2 4 2-1v12h10V9l2 1 2-4-5-3c-1 2-3 2-4 2s-3 0-4-2z"/>'
+};
+document.getElementById('grid').innerHTML = items.map(x => `
+  <article class="card bg-ink border border-line rounded-md overflow-hidden flex flex-col">
+    <div class="relative aspect-square bg-gradient-to-br from-[#1f1f23] to-[#0f0f11] flex items-center justify-center">
+      ${x.t ? `<span class="absolute top-3 left-3 bg-brand text-[10px] uppercase tracking-widest px-2 py-1 rounded-sm">${x.t}</span>` : ''}
+      <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="#3a3a40" stroke-width="1">${icon[x.i]}</svg>
+    </div>
+    <div class="p-4 flex flex-col gap-1 flex-1">
+      <span class="text-[10px] uppercase tracking-widest text-mute">${x.c}</span>
+      <h3 class="font-semibold text-sm">${x.n}</h3>
+      <div class="display text-brand text-sm mt-1">$ ${x.p}</div>
+      <a href="#" class="btn btn-ghost !py-2.5 !text-[.6rem] mt-3">Cotizar por WhatsApp</a>
+    </div>
+  </article>`).join('');
+</script>
+</body>
+</html>
