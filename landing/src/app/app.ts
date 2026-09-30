@@ -1,4 +1,4 @@
-import { isPlatformBrowser } from '@angular/common';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import { ChangeDetectionStrategy, Component, PLATFORM_ID, inject } from '@angular/core';
 import { CatalogoService } from './core/catalogo.service';
 import { Catalogo } from './sections/catalogo';
@@ -38,6 +38,13 @@ import { WhatsappFlotante } from './sections/whatsapp-flotante';
 export class App {
   constructor() {
     // Los datos se piden solo en el navegador para que siempre estén frescos (el admin los cambia).
-    if (isPlatformBrowser(inject(PLATFORM_ID))) void inject(CatalogoService).cargar();
+    if (!isPlatformBrowser(inject(PLATFORM_ID))) return;
+    const catalogo = inject(CatalogoService);
+    const documento = inject(DOCUMENT);
+    void catalogo.cargar();
+    // Quien deja la pestaña abierta ve los cambios del admin al volver (como máximo una vez por minuto).
+    documento.addEventListener('visibilitychange', () => {
+      if (documento.visibilityState === 'visible') void catalogo.refrescar();
+    });
   }
 }

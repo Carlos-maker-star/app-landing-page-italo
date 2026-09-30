@@ -43,9 +43,9 @@ export class IconoProducto {
 
   protected readonly tipo = computed(() => {
     const c = (this.categoria() ?? '').toLowerCase();
-    if (/zapat|calzado|sneaker/.test(c)) return 'zapatilla';
+    if (/zapat|calzado|sneaker|bota|sandalia|zapas/.test(c)) return 'zapatilla';
     if (/iphone|tech|tecnolog|celular|phone/.test(c)) return 'telefono';
-    if (/ropa|polo|casaca|hoodie|prenda/.test(c)) return 'ropa';
+    if (/ropa|polo|casaca|chompa|polera|camisa|abrigo|hoodie|prenda|pantal|jean|short|vestido|buzo/.test(c)) return 'ropa';
     return 'caja';
   });
 }

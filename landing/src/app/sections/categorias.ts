@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { CatalogoService } from '../core/catalogo.service';
 import { WhatsappService } from '../core/whatsapp.service';
 import { IconoProducto } from '../shared/icono-producto';
 
@@ -11,12 +12,16 @@ import { IconoProducto } from '../shared/icono-producto';
       <span class="bars mb-3"><i></i><i></i><i></i></span>
       <h2 class="display text-2xl md:text-3xl">Categorías</h2>
       <div class="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
-        @for (c of categorias; track c.nombre) {
-          <a href="#catalogo" class="flex aspect-square flex-col justify-between rounded-md border border-line bg-surface p-4 transition sm:p-6 hover:-translate-y-1 hover:border-brand">
-            <app-icono-producto [categoria]="c.icono" [tamano]="44" color="#FF4A00" [trazo]="1.4" />
+        @for (c of catalogo.categorias(); track c.id) {
+          <a
+            href="#catalogo"
+            (click)="catalogo.categoriaActiva.set(c.nombre)"
+            class="flex aspect-square flex-col justify-between rounded-md border border-line bg-surface p-4 transition sm:p-6 hover:-translate-y-1 hover:border-brand"
+          >
+            <app-icono-producto [categoria]="c.nombre" [tamano]="44" color="#FF4A00" [trazo]="1.4" />
             <div>
               <div class="display break-words text-[.7rem] sm:text-sm">{{ c.nombre }}</div>
-              <div class="mt-1 text-xs text-mute">{{ c.nota }}</div>
+              <div class="mt-1 text-xs text-mute">{{ detalle(c.nombre) }}</div>
             </div>
           </a>
         }
@@ -32,10 +37,11 @@ import { IconoProducto } from '../shared/icono-producto';
   `,
 })
 export class Categorias {
+  protected readonly catalogo = inject(CatalogoService);
   protected readonly wa = inject(WhatsappService);
-  protected readonly categorias = [
-    { nombre: 'Zapatillas', nota: 'Nike, Adidas, Jordan…', icono: 'zapatilla' },
-    { nombre: 'Ropa', nota: 'Streetwear y marcas', icono: 'ropa' },
-    { nombre: 'iPhones', nota: 'Y tecnología', icono: 'iphone' },
-  ];
+
+  protected detalle(nombre: string): string {
+    const n = this.catalogo.conteo().get(nombre) ?? 0;
+    return n === 0 ? 'Pídelo por encargo' : n === 1 ? '1 producto' : `${n} productos`;
+  }
 }

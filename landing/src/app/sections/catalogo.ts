@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { CatalogoService } from '../core/catalogo.service';
 import { urlHttps } from '../core/enlaces';
 import { formatearPrecio } from '../core/precio';
@@ -17,11 +17,11 @@ import { IconoProducto } from '../shared/icono-producto';
             <span class="bars mb-3"><i></i><i></i><i></i></span>
             <h2 class="display text-2xl md:text-3xl">Productos destacados</h2>
           </div>
-          @if (catalogo.categorias().length > 1) {
+          @if (catalogo.categorias().length > 0) {
             <div class="flex flex-wrap gap-2 text-xs uppercase tracking-widest" role="group" aria-label="Filtrar por categoría">
               <button type="button" class="rounded-sm px-4 py-2 transition" [class]="clase(null)" [attr.aria-pressed]="filtro() === null" (click)="filtro.set(null)">Todo</button>
-              @for (c of catalogo.categorias(); track c) {
-                <button type="button" class="rounded-sm px-4 py-2 transition" [class]="clase(c)" [attr.aria-pressed]="filtro() === c" (click)="filtro.set(c)">{{ c }}</button>
+              @for (c of catalogo.categorias(); track c.id) {
+                <button type="button" class="rounded-sm px-4 py-2 transition" [class]="clase(c.nombre)" [attr.aria-pressed]="filtro() === c.nombre" (click)="filtro.set(c.nombre)">{{ c.nombre }}</button>
               }
             </div>
           }
@@ -35,9 +35,14 @@ import { IconoProducto } from '../shared/icono-producto';
             }
           </div>
         } @else if (visibles().length === 0) {
-          <p class="mt-10 rounded-md border border-dashed border-line p-10 text-center text-mute">
-            Estamos actualizando el catálogo. Escríbenos por WhatsApp y te ayudamos a encontrar lo que buscas.
-          </p>
+          <div class="mt-10 flex flex-col items-center gap-4 rounded-md border border-dashed border-line p-10 text-center text-mute">
+            @if (filtro(); as cat) {
+              <p class="m-0">Por ahora no hay {{ cat }} en el catálogo, pero podemos traértelo por encargo.</p>
+              <a [href]="wa.url(cat)" target="_blank" rel="noopener" class="btn btn-primary">Pedir {{ cat }} por WhatsApp</a>
+            } @else {
+              <p class="m-0">Estamos actualizando el catálogo. Escríbenos por WhatsApp y te ayudamos a encontrar lo que buscas.</p>
+            }
+          </div>
         } @else {
           <div class="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
             @for (p of visibles(); track p.id) {
@@ -73,7 +78,7 @@ import { IconoProducto } from '../shared/icono-producto';
 export class Catalogo {
   protected readonly catalogo = inject(CatalogoService);
   protected readonly wa = inject(WhatsappService);
-  protected readonly filtro = signal<string | null>(null);
+  protected readonly filtro = this.catalogo.categoriaActiva;
 
   protected readonly visibles = computed(() => {
     const f = this.filtro();
