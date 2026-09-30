@@ -27,8 +27,8 @@ import { IconoProducto } from '../shared/icono-producto';
             {{ catalogo.config().titular_hero }}
           </h1>
           <p class="mt-6 max-w-md text-lg text-mute">
-            Zapatillas, ropa y productos de Apple. 100% originales, importados para ti y con entrega
-            en tu ciudad.
+            Zapatillas, ropa y productos de Apple.<br />
+            100% originales, importados para ti y con entrega en tu ciudad.
           </p>
           <div class="mt-8 flex flex-wrap gap-3">
             <a href="#catalogo" class="btn btn-primary">Ver catálogo</a>
