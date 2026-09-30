@@ -12,20 +12,31 @@ import { RedesSociales } from '../shared/redes-sociales';
       <div class="mx-auto grid max-w-6xl gap-8 px-4 py-12 text-sm md:grid-cols-3">
         <div>
           <div class="display text-lg tracking-[.35em]">ISEVEN</div>
-          <p class="mt-3 text-mute">Importaciones originales{{ cfg().ciudad ? ' para ' + cfg().ciudad : '' }}.</p>
+          <p class="mt-3 text-mute">Importaciones originales</p>
         </div>
         <div>
           <div class="mb-3 font-semibold">Contacto</div>
           <ul class="space-y-1 text-mute">
-            @if (cfg().whatsapp) { <li>WhatsApp: {{ cfg().whatsapp }}</li> }
-            @if (cfg().correo) { <li>{{ cfg().correo }}</li> }
+            @if (cfg().whatsapp) {
+              <li>WhatsApp: {{ cfg().whatsapp }}</li>
+            }
+            @if (cfg().correo) {
+              <li>{{ cfg().correo }}</li>
+            }
             @if (cfg().direccion) {
               <li>
-                @if (mapa()) { <a [href]="mapa()" target="_blank" rel="noopener" class="hover:text-white">{{ cfg().direccion }}</a> }
-                @else { {{ cfg().direccion }} }
+                @if (mapa()) {
+                  <a [href]="mapa()" target="_blank" rel="noopener" class="hover:text-white">{{
+                    cfg().direccion
+                  }}</a>
+                } @else {
+                  {{ cfg().direccion }}
+                }
               </li>
             }
-            @if (cfg().horario) { <li>{{ cfg().horario }}</li> }
+            @if (cfg().horario) {
+              <li>{{ cfg().horario }}</li>
+            }
           </ul>
         </div>
         @if (hayRedes()) {
