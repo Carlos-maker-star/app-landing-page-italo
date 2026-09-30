@@ -47,9 +47,9 @@ import { IconoProducto } from '../shared/icono-producto';
           <div class="mt-10 grid grid-cols-2 gap-4 md:grid-cols-4">
             @for (p of visibles(); track p.id) {
               <article class="flex flex-col overflow-hidden rounded-md border border-line bg-ink transition hover:-translate-y-1 hover:border-brand">
-                <div class="relative flex aspect-square items-center justify-center bg-gradient-to-br from-[#1f1f23] to-[#0f0f11]">
+                <div class="relative flex aspect-[4/5] items-center justify-center overflow-hidden bg-gradient-to-br from-[#1f1f23] to-[#0f0f11]">
                   @if (imagen(p.imagen_url); as foto) {
-                    <img [src]="foto" [alt]="p.nombre" loading="lazy" width="400" height="400" class="h-full w-full object-cover" />
+                    <img [src]="foto" [alt]="p.nombre" loading="lazy" width="400" height="500" class="absolute inset-0 h-full w-full object-cover" />
                   } @else {
                     <app-icono-producto [categoria]="p.categoria" />
                   }

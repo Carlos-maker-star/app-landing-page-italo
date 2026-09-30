@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CatalogoService } from '../core/catalogo.service';
+import { WhatsappService } from '../core/whatsapp.service';
 
 /** Textos de relleno: reemplazar por testimonios y capturas reales del cliente antes de publicar. */
 @Component({
@@ -21,8 +22,9 @@ import { CatalogoService } from '../core/catalogo.service';
               </figcaption>
             </figure>
           }
-          <div class="flex items-center justify-center rounded-md border border-dashed border-line p-6 text-center text-sm text-mute">
-            Aquí van capturas de chats<br />y fotos de entregas reales
+          <div class="flex flex-col items-center justify-center gap-4 rounded-md border border-brand/40 bg-ink p-6 text-center">
+            <p class="m-0 text-sm text-mute">¿Buscas algo en especial? Te lo conseguimos y te lo entregamos en tu ciudad.</p>
+            <a [href]="wa.url()" target="_blank" rel="noopener" class="btn btn-primary whitespace-nowrap">Escríbenos ahora</a>
           </div>
         </div>
       </div>
@@ -31,8 +33,9 @@ import { CatalogoService } from '../core/catalogo.service';
 })
 export class Testimonios {
   protected readonly catalogo = inject(CatalogoService);
+  protected readonly wa = inject(WhatsappService);
   protected readonly testimonios = [
-    { autor: 'Cliente 1', texto: 'Llegaron mis Jordan en el tiempo que me dijeron. Originales y bien empacadas.' },
-    { autor: 'Cliente 2', texto: 'Me consiguieron el iPhone que no encontraba en tiendas. Excelente atención.' },
+    { autor: 'Gabriel Arenas', texto: 'Llegaron mis Jordan en el tiempo que me dijeron. Originales y bien empacadas.' },
+    { autor: 'Carlos Rivadeneyra', texto: 'Me consiguieron el iPhone que no encontraba en tiendas. Excelente atención.' },
   ];
 }
