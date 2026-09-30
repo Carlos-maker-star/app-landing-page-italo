@@ -33,6 +33,15 @@ describe('Catalogo · filtros por categoría', () => {
     expect(el.textContent).toContain('Pedir Chompa por WhatsApp');
   });
 
+  it('el botón del producto es corto (icono + "Cotizar") y no se parte; el nombre completo va en aria-label', () => {
+    const { el } = crear();
+    const boton = el.querySelector('article a.btn')!;
+    expect(boton.textContent!.trim()).toBe('Cotizar');
+    expect(boton.classList.contains('whitespace-nowrap')).toBe(true);
+    expect(boton.querySelector('svg')).not.toBeNull();
+    expect(boton.getAttribute('aria-label')).toBe('Cotizar Air Max por WhatsApp');
+  });
+
   it('con "Todo" vuelven todos los productos', () => {
     const { fixture, el, servicio } = crear();
     servicio.categoriaActiva.set('Chompa');

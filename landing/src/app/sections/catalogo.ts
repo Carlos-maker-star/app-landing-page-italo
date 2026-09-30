@@ -63,8 +63,17 @@ import { IconoProducto } from '../shared/icono-producto';
                   <span class="text-[10px] uppercase tracking-widest text-mute">{{ p.categoria }}</span>
                   <h3 class="text-sm font-semibold">{{ p.nombre }}</h3>
                   <div class="display mb-3 mt-1 text-sm text-brand">{{ precio(p.precio, p.moneda) }}</div>
-                  <a [href]="wa.url(p.nombre)" target="_blank" rel="noopener" class="btn btn-ghost mt-auto !py-2.5 !text-[.6rem]">
-                    {{ p.agotado ? 'Consultar' : 'Cotizar' }}<span class="hidden sm:inline">&nbsp;por WhatsApp</span>
+                  <a
+                    [href]="wa.url(p.nombre)"
+                    target="_blank"
+                    rel="noopener"
+                    [attr.aria-label]="(p.agotado ? 'Consultar ' : 'Cotizar ') + p.nombre + ' por WhatsApp'"
+                    class="btn btn-ghost mt-auto whitespace-nowrap !py-2.5 !text-[.6rem]"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                      <path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.1-1.3A10 10 0 1 0 12 2zm5.2 14.2c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.2-4.6-4.1-4.7-4.3-.1-.2-1.1-1.5-1.1-2.8s.7-2 1-2.3c.2-.3.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.4-.4.4c-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2 1.3 2.3 1.4.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.8-.1 1.4z" />
+                    </svg>
+                    {{ p.agotado ? 'Consultar' : 'Cotizar' }}
                   </a>
                 </div>
               </article>
