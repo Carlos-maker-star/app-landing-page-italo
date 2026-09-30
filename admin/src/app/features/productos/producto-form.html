@@ -1,26 +1,45 @@
 <form [formGroup]="form" (ngSubmit)="guardar()" class="flex flex-col gap-6" novalidate>
   <div class="flex flex-wrap items-end justify-between gap-4">
     <div class="flex flex-col gap-1.5">
-      <h1 class="display m-0 text-[22px]">{{ esNuevo() ? 'Nuevo producto' : 'Editar producto' }}</h1>
-      <p class="m-0 text-sm text-muted">Lo que guardes aquí aparece en la landing si lo dejas visible.</p>
+      <h1 class="display m-0 text-[22px]">
+        {{ esNuevo() ? 'Nuevo producto' : 'Editar producto' }}
+      </h1>
+      <p class="m-0 text-sm text-muted">
+        Lo que guardes aquí aparece en la landing si lo dejas visible.
+      </p>
     </div>
     <div class="flex items-center gap-2">
       <button matButton type="button" (click)="cancelar()">Cancelar</button>
-      <button matButton="filled" type="submit" [disabled]="guardando() || subiendo() || cargando() || noEncontrado()">
+      <button
+        matButton="filled"
+        type="submit"
+        [disabled]="guardando() || subiendo() || cargando() || noEncontrado()"
+      >
         <mat-icon>check</mat-icon>{{ guardando() ? 'Guardando…' : 'Guardar' }}
       </button>
     </div>
   </div>
 
-  <div class="h-1">@if (cargando() || guardando()) { <mat-progress-bar mode="indeterminate" /> }</div>
+  <div class="h-1">
+    @if (cargando() || guardando()) {
+      <mat-progress-bar mode="indeterminate" />
+    }
+  </div>
 
   @if (error()) {
-    <p class="m-0 rounded-md bg-peligro-bg px-4 py-3 text-sm text-peligro-fg" role="alert">{{ error() }}</p>
+    <p class="m-0 rounded-md bg-peligro-bg px-4 py-3 text-sm text-peligro-fg" role="alert">
+      {{ error() }}
+    </p>
   }
 
   @if (noEncontrado()) {
-    <section class="flex flex-col items-center gap-3 rounded-lg border border-line bg-surface px-6 py-14 text-center">
-      <span class="flex size-12 items-center justify-center rounded-full bg-primary-soft text-primary"><mat-icon>search_off</mat-icon></span>
+    <section
+      class="flex flex-col items-center gap-3 rounded-lg border border-line bg-surface px-6 py-14 text-center"
+    >
+      <span
+        class="flex size-12 items-center justify-center rounded-full bg-primary-soft text-primary"
+        ><mat-icon>search_off</mat-icon></span
+      >
       <p class="m-0 font-semibold">No pudimos abrir este producto</p>
       <a matButton routerLink="/productos">Volver a productos</a>
     </section>
@@ -32,8 +51,15 @@
           <h2 class="m-0 text-base font-semibold">Información</h2>
           <mat-form-field>
             <mat-label>Nombre</mat-label>
-            <input matInput formControlName="nombre" maxlength="120" placeholder="Nike Air Max 90 Infrared" />
-            @if (form.controls.nombre.hasError('required')) { <mat-error>El nombre es obligatorio</mat-error> }
+            <input
+              matInput
+              formControlName="nombre"
+              maxlength="120"
+              placeholder="Nike Air Max 90 Infrared"
+            />
+            @if (form.controls.nombre.hasError('required')) {
+              <mat-error>El nombre es obligatorio</mat-error>
+            }
           </mat-form-field>
 
           <div class="grid items-start gap-4 sm:grid-cols-3">
@@ -41,27 +67,52 @@
               <mat-label>Categoría</mat-label>
               <mat-select formControlName="categoria_id">
                 <mat-option [value]="null">Sin categoría</mat-option>
-                @for (c of categorias(); track c.id) { <mat-option [value]="c.id">{{ c.nombre }}</mat-option> }
+                @for (c of categorias(); track c.id) {
+                  <mat-option [value]="c.id">{{ c.nombre }}</mat-option>
+                }
               </mat-select>
-              <mat-hint><a routerLink="/categorias" class="text-primary">Administrar categorías</a></mat-hint>
+              <mat-hint
+                ><a routerLink="/categorias" class="text-primary"
+                  >Administrar categorías</a
+                ></mat-hint
+              >
             </mat-form-field>
             <mat-form-field>
               <mat-label>Precio</mat-label>
-              <input matInput type="number" inputmode="decimal" min="0" step="0.01" formControlName="precio" />
-              @if (form.controls.precio.hasError('required')) { <mat-error>El precio es obligatorio</mat-error> }
-              @if (form.controls.precio.hasError('min')) { <mat-error>No puede ser negativo</mat-error> }
+              <input
+                matInput
+                type="number"
+                inputmode="decimal"
+                min="0"
+                step="0.01"
+                formControlName="precio"
+              />
+              @if (form.controls.precio.hasError('required')) {
+                <mat-error>El precio es obligatorio</mat-error>
+              }
+              @if (form.controls.precio.hasError('min')) {
+                <mat-error>No puede ser negativo</mat-error>
+              }
             </mat-form-field>
             <mat-form-field>
               <mat-label>Moneda</mat-label>
               <mat-select formControlName="moneda">
-                @for (m of monedas; track m.codigo) { <mat-option [value]="m.codigo">{{ m.nombre }}</mat-option> }
+                @for (m of monedas; track m.codigo) {
+                  <mat-option [value]="m.codigo">{{ m.nombre }}</mat-option>
+                }
               </mat-select>
             </mat-form-field>
           </div>
 
           <mat-form-field>
             <mat-label>Descripción corta</mat-label>
-            <textarea matInput rows="3" maxlength="300" formControlName="descripcion" placeholder="100% original, importado de EE. UU."></textarea>
+            <textarea
+              matInput
+              rows="3"
+              maxlength="300"
+              formControlName="descripcion"
+              placeholder="100% original, importado de EE. UU."
+            ></textarea>
             <mat-hint align="end">{{ (valores().descripcion ?? '').length }}/300</mat-hint>
           </mat-form-field>
 
@@ -69,7 +120,9 @@
             <mat-label>Etiqueta (opcional)</mat-label>
             <mat-select formControlName="etiqueta">
               <mat-option [value]="null">Ninguna</mat-option>
-              @for (e of etiquetas; track e) { <mat-option [value]="e">{{ e }}</mat-option> }
+              @for (e of etiquetas; track e) {
+                <mat-option [value]="e">{{ e }}</mat-option>
+              }
             </mat-select>
           </mat-form-field>
         </section>
@@ -82,32 +135,62 @@
           </div>
           <div class="grid grid-cols-2 gap-3 sm:grid-cols-4">
             @for (url of fotos(); track url; let i = $index) {
-              <div class="group relative aspect-square overflow-hidden rounded-md border" [class]="i === 0 ? 'border-primary' : 'border-line'">
+              <div
+                class="group relative aspect-square overflow-hidden rounded-md border"
+                [class]="i === 0 ? 'border-primary' : 'border-line'"
+              >
                 <img [src]="url" [alt]="'Foto ' + (i + 1)" class="size-full object-cover" />
                 @if (i === 0) {
-                  <span class="absolute bottom-1.5 left-1.5 rounded-full bg-nuevo-bg px-2 py-0.5 text-[11px] font-semibold text-nuevo-fg">Principal</span>
+                  <span
+                    class="absolute bottom-1.5 left-1.5 rounded-full bg-nuevo-bg px-2 py-0.5 text-[11px] font-semibold text-nuevo-fg"
+                    >Principal</span
+                  >
                 }
                 <div class="absolute top-1 right-1 flex gap-1">
                   @if (i > 0) {
-                    <button type="button" class="flex size-7 cursor-pointer items-center justify-center rounded-full border-0 bg-black/70 text-white" (click)="hacerPrincipal(i)" aria-label="Hacer principal" title="Hacer principal">
+                    <button
+                      type="button"
+                      class="flex size-7 cursor-pointer items-center justify-center rounded-full border-0 bg-black/70 text-white"
+                      (click)="hacerPrincipal(i)"
+                      aria-label="Hacer principal"
+                      title="Hacer principal"
+                    >
                       <mat-icon class="icono-xs">star</mat-icon>
                     </button>
                   }
-                  <button type="button" class="flex size-7 cursor-pointer items-center justify-center rounded-full border-0 bg-black/70 text-white" (click)="quitarFoto(i)" aria-label="Quitar foto" title="Quitar">
+                  <button
+                    type="button"
+                    class="flex size-7 cursor-pointer items-center justify-center rounded-full border-0 bg-black/70 text-white"
+                    (click)="quitarFoto(i)"
+                    aria-label="Quitar foto"
+                    title="Quitar"
+                  >
                     <mat-icon class="icono-xs">close</mat-icon>
                   </button>
                 </div>
               </div>
             }
             @if (fotos().length < maxFotos) {
-              <label class="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-md border-[1.5px] border-dashed border-line bg-surface-2 text-center text-xs text-subtle hover:border-primary hover:text-primary">
+              <label
+                class="flex aspect-square cursor-pointer flex-col items-center justify-center gap-1 rounded-md border-[1.5px] border-dashed border-line bg-surface-2 text-center text-xs text-subtle hover:border-primary hover:text-primary"
+              >
                 <mat-icon>add_photo_alternate</mat-icon>
                 {{ subiendo() ? 'Subiendo…' : 'Agregar fotos' }}
-                <input type="file" accept="image/*" multiple class="sr-only" [disabled]="subiendo()" (change)="elegirFotos($event)" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  class="sr-only"
+                  [disabled]="subiendo()"
+                  (change)="elegirFotos($event)"
+                />
               </label>
             }
           </div>
-          <p class="m-0 text-xs text-subtle">Hasta {{ maxFotos }} fotos. Se reducen y convierten a WebP al subir para que la landing cargue rápido.</p>
+          <p class="m-0 text-xs text-subtle">
+            Hasta {{ maxFotos }} fotos. Se reducen y convierten a WebP al subir para que la landing
+            cargue rápido.
+          </p>
         </section>
       </div>
 
@@ -116,16 +199,22 @@
         <section class="flex flex-col gap-4 rounded-lg border border-line bg-surface p-5">
           <h2 class="m-0 text-base font-semibold">Publicación</h2>
           <div class="flex items-center justify-between gap-3">
-            <div class="flex flex-col"><b class="text-sm">Visible en la landing</b><span class="text-xs text-subtle">Se muestra en el catálogo público</span></div>
+            <div class="flex flex-col">
+              <b class="text-sm">Visible en la landing</b
+              ><span class="text-xs text-subtle">Se muestra en el catálogo público</span>
+            </div>
             <mat-slide-toggle formControlName="visible" aria-label="Visible en la landing" />
           </div>
           <div class="flex items-center justify-between gap-3">
-            <div class="flex flex-col"><b class="text-sm">Agotado</b><span class="text-xs text-subtle">Muestra “Agotado” sin borrarlo</span></div>
+            <div class="flex flex-col">
+              <b class="text-sm">Agotado</b
+              ><span class="text-xs text-subtle">Muestra “Agotado” sin borrarlo</span>
+            </div>
             <mat-slide-toggle formControlName="agotado" aria-label="Agotado" />
           </div>
           <mat-form-field>
             <mat-label>Orden de aparición</mat-label>
-            <input matInput type="number" min="0" formControlName="orden" />
+            <input matInput type="number" min="1" formControlName="orden" />
             <mat-hint>El 1 sale primero</mat-hint>
           </mat-form-field>
         </section>
@@ -134,25 +223,44 @@
         <section class="flex flex-col gap-3 rounded-lg border border-line bg-surface p-5">
           <h2 class="m-0 text-base font-semibold">Vista previa</h2>
           <div class="overflow-hidden rounded-md border border-line bg-[#0b0b0c] text-white">
-            <div class="relative flex aspect-square items-center justify-center bg-gradient-to-br from-[#1f1f23] to-[#0f0f11]">
+            <div
+              class="relative flex aspect-square items-center justify-center bg-gradient-to-br from-[#1f1f23] to-[#0f0f11]"
+            >
               @if (vista().foto) {
                 <img [src]="vista().foto" alt="" class="size-full object-cover" />
               } @else {
                 <mat-icon class="!size-16 !text-[64px] text-[#3a3a40]">image</mat-icon>
               }
               @if (vista().insignia) {
-                <span class="absolute top-2.5 left-2.5 rounded-sm px-2 py-1 text-[10px] font-semibold uppercase tracking-widest" [class]="vista().insignia === 'Agotado' ? 'bg-white text-[#0b0b0c]' : 'bg-[#ff4a00] text-[#0b0b0c]'">{{ vista().insignia }}</span>
+                <span
+                  class="absolute top-2.5 left-2.5 rounded-sm px-2 py-1 text-[10px] font-semibold uppercase tracking-widest"
+                  [class]="
+                    vista().insignia === 'Agotado'
+                      ? 'bg-white text-[#0b0b0c]'
+                      : 'bg-[#ff4a00] text-[#0b0b0c]'
+                  "
+                  >{{ vista().insignia }}</span
+                >
               }
             </div>
             <div class="flex flex-col gap-1 p-3.5">
-              <span class="text-[10px] uppercase tracking-widest text-[#a1a1a8]">{{ vista().categoria }}</span>
+              <span class="text-[10px] uppercase tracking-widest text-[#a1a1a8]">{{
+                vista().categoria
+              }}</span>
               <span class="text-sm font-semibold">{{ vista().nombre }}</span>
-              <span class="display text-[13px] tracking-normal text-[#ff4a00]">{{ vista().precio }}</span>
-              <span class="mt-2 border border-[#2a2a2e] py-2 text-center font-[Michroma] text-[9px] uppercase tracking-[.12em]">Cotizar por WhatsApp</span>
+              <span class="display text-[13px] tracking-normal text-[#ff4a00]">{{
+                vista().precio
+              }}</span>
+              <span
+                class="mt-2 border border-[#2a2a2e] py-2 text-center font-[Michroma] text-[9px] uppercase tracking-[.12em]"
+                >Cotizar por WhatsApp</span
+              >
             </div>
           </div>
           @if (!valores().visible) {
-            <p class="m-0 text-xs text-subtle">Este producto está oculto: no aparece en la landing hasta que lo actives.</p>
+            <p class="m-0 text-xs text-subtle">
+              Este producto está oculto: no aparece en la landing hasta que lo actives.
+            </p>
           }
         </section>
       </div>
